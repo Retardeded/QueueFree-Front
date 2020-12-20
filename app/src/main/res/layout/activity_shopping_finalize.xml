@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Shopping">
+
+    <TextView
+        android:id="@+id/tv_finalize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Podsumowanie zakupów"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"/>
+
+
+    <Button
+        android:id="@+id/btnPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginStart="200dp"
+        android:text="Zapłać"
+        />
+
+    <TextView
+        android:id="@+id/et_bill_cost"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:hint="Do zapłaty"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/et_custom"
+        android:textSize="15sp" />
+
+
+    <TextView
+        android:id="@+id/et_bill"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:hint="@string/current_bill_of_sale"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/et_custom"
+        android:textSize="15sp" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/et_receipt_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>>
+
+
+</LinearLayout>

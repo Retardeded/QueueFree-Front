@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DashBoard">
+
+
+
+    <TextView
+        android:id="@+id/tvDashWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rejestracja pomyślna"
+        android:textSize="40sp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="40dp"
+        />
+
+    <TextView
+        android:layout_below="@id/tvDashWelcome"
+        android:id="@+id/etDashLoginData"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/username"
+        android:text="Twoje dane logowania:"
+        android:padding="15dp"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_below="@id/etDashLoginData"
+        android:id="@+id/etDashUsername"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/username"
+        android:padding="15dp"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/etDashPassword"
+        android:layout_below="@id/etDashUsername"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/et_custom"
+        android:hint="@string/password"
+        android:padding="15dp"
+        android:textSize="15sp" />
+
+
+
+    <Button
+        android:layout_below="@id/etDashPassword"
+        android:id="@+id/btnGoLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/btn_custom"
+        android:text="Przejdź do ekranu logowania"
+        android:textColor="@android:color/white" />
+
+
+
+
+</RelativeLayout>
