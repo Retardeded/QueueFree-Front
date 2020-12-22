@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.test.rule.ActivityTestRule;
 import org.junit.After;
@@ -25,7 +26,7 @@ public class MainActivityTest {
 
     MainActivity mActivity = null;
 
-    Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(Register.class.getName(), null, false);
+    Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(MainPanel.class.getName(), null, false);
 
     @Before
     public void setUp() throws Exception {
@@ -42,6 +43,27 @@ public class MainActivityTest {
         Activity register = getInstrumentation().waitForMonitorWithTimeout(monitor,5000);
 
         assertNotNull(register);
+
+    }
+
+    @Test
+    public void testLogIn(){
+
+        assertNotNull(mActivity.findViewById(R.id.btnLogin));
+
+        TextView loginText = mActivity.findViewById(R.id.etLoginUsername);
+        TextView passwordText = mActivity.findViewById(R.id.etLoginPassword);
+
+        mActivity.createClient();
+
+        loginText.setText("user");
+        passwordText.setText("haslo");
+
+        onView(withId(R.id.btnLogin)).perform(click());
+
+        Activity mainPanel = getInstrumentation().waitForMonitorWithTimeout(monitor,5000);
+
+        assertNotNull(mainPanel);
 
     }
 

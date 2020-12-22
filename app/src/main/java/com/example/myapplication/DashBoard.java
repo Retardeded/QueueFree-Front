@@ -23,7 +23,6 @@ public class DashBoard extends AppCompatActivity {
             fillLoginData(bundle);
         }
 
-
         Button btnGoLogin= findViewById(R.id.btnGoLogIn);
 
         btnGoLogin.setOnClickListener(new View.OnClickListener() {

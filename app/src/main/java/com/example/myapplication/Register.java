@@ -82,7 +82,7 @@ public class Register extends AppCompatActivity {
     /**
      * Launch Dashboard Activity on Successful Sign Up
      */
-    private void loadDashboard() {
+    void loadDashboard() {
         Intent i = new Intent(getApplicationContext(), DashBoard.class);
         i.putExtra("userInfo", user + " " + password);
         startActivity(i);

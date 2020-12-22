@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
@@ -37,20 +38,24 @@ public class RegisterTest {
 
     @Test
     public void testLanuchOfDashBoard(){
-        /*
-        assertNotNull(mRegister.findViewById(R.id.btnRegister));
-        onView(withId(R.id.btnRegister)).perform(click());
 
-        EditText etUsername = mRegister.findViewById(R.id.etUsername);
-        etUsername.setText("Som1");
+        mRegister.user = "1";
+        mRegister.password = "2";
+        mRegister.loadDashboard();
 
         Activity dashBoard = getInstrumentation().waitForMonitorWithTimeout(monitor,5000);
-
         assertNotNull(dashBoard);
+
+        Bundle bundle = dashBoard.getIntent().getExtras();
+
+        String[] userInfo = bundle.getString("userInfo").split(" ");
+
+        boolean condtion = userInfo[0].equals("1") && userInfo[1].equals("2");
+
+        Assert.assertTrue(condtion);
 
         dashBoard.finish();
         //mRegister.
-         */
     }
 
     @Test
@@ -81,71 +86,3 @@ public class RegisterTest {
 
 }
 
-/*
-
-@Test
-    public void emptyNameTest() {
-
-        mRegister = mRegisterRuleTest.getActivity();
-
-        mRegister.user = "";
-        mRegister.password = "som";
-        mRegister.confirmPassword = "som";
-        mRegister.fullName = "som";
-
-        Assert.assertFalse(mRegister.validateInputs());
-    }
-
-@Test
-    public void onCreate() {
-    }
-
-    @Test
-    public void validateInputs() {
-    }
-
-package com.example.myapplication;
-
-        import org.junit.After;
-        import org.junit.Assert;
-        import org.junit.Before;
-        import org.junit.Rule;
-        import org.junit.Test;
-
-        import static org.junit.Assert.*;
-
-public class RegisterTest {
-
-    //String user;
-    //String password;
-    //String confirmPassword;
-    //String fullName;
-
-
-    @Rule
-    public ActivityTestRule<Register> mRuleTest = new ActivityTestRule<Register>(Register.class);
-
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    Register register = new Register();
-    @Test
-    public void emptyNameTest() {
-
-        register.user = "";
-        register.password = "som";
-        register.confirmPassword = "som";
-        register.fullName = "som";
-
-        Assert.assertFalse(register.validateInputs());
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
-
- }
-
- */

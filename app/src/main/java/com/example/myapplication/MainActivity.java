@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CookieManager cookieManager = new CookieManager();
-        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 
         loginText = findViewById(R.id.etLoginUsername);
         passwordText = findViewById(R.id.etLoginPassword);
@@ -52,12 +50,20 @@ public class MainActivity extends AppCompatActivity {
         autoFillCredentials();
         setUpButtons();
 
+        createClient();
+
+    }
+
+    void createClient() {
+        CookieManager cookieManager = new CookieManager();
+        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         MainActivity.okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
-                    public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
                         Request originalRequest = chain.request();
                         Request newRequest = originalRequest.newBuilder()
                                 .header("Interceptor-Header", "xyz")
@@ -68,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 .addInterceptor(loggingInterceptor)
                 .cookieJar(new JavaNetCookieJar(cookieManager))
                 .build();
-
     }
 
     private void setUpButtons() {
