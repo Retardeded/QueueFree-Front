@@ -34,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonLogIn;
     private Button buttonRegister;
-    private String user = "user";
-    private String password = "haslo";
+    String user = "user";
+    String password = "haslo";
+    private static final String KEY_EMPTY = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,13 @@ public class MainActivity extends AppCompatActivity {
         buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logIn();
+
+                user = loginText.getText().toString();
+                password = passwordText.getText().toString();
+
+                if(validateInputs()) {
+                    logIn();
+                }
             }
         });
 
@@ -99,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logIn() {
-
-        user = loginText.getText().toString();
-        password = passwordText.getText().toString();
 
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://jsonplaceholder.typicode.com/")
@@ -134,5 +138,17 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("my on failure2");
             }
         });
+    }
+
+    boolean validateInputs() {
+
+        if (KEY_EMPTY.equals(user)) {
+            return false;
+        }
+        if (KEY_EMPTY.equals(password)) {
+            return false;
+        }
+
+        return true;
     }
 }

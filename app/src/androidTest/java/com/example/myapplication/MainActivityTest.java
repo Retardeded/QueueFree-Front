@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.test.rule.ActivityTestRule;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +33,6 @@ public class MainActivityTest {
         mActivity = mActivityRuleTest.getActivity();
     }
 
-
     @Test
     public void testLanuchOfRegister(){
 
@@ -46,6 +44,34 @@ public class MainActivityTest {
         assertNotNull(register);
 
     }
+
+    @Test
+    public void emptyNameTest() {
+
+        mActivity.user = "";
+        mActivity.password = "som";
+
+        Assert.assertFalse(mActivity.validateInputs());
+    }
+
+    @Test
+    public void emptyPasswordTest() {
+
+        mActivity.user = "som";
+        mActivity.password = "";
+
+        Assert.assertFalse(mActivity.validateInputs());
+    }
+
+    @Test
+    public void nonEmptyLoginDataTest() {
+
+        mActivity.user = "som";
+        mActivity.password = "som";
+
+        Assert.assertTrue(mActivity.validateInputs());
+    }
+
 
     @After
     public void tearDown() throws Exception {

@@ -50,7 +50,7 @@ public class ItemsAdapter extends
         textView.setText(item.product.getName());
         TextView quantityView = holder.quantityTextView;
         //quantityView.setText(item.quantity);
-        quantityView.setText(String.valueOf(item.quantity));
+        quantityView.setText("ilość : " + String.valueOf(item.quantity));
         Button removeButton = holder.removeButton;
         removeButton.setText("Usuń");
         removeButton.setId(position);

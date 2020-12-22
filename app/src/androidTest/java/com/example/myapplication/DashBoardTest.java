@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Intent;
 
 import androidx.test.rule.ActivityTestRule;
 
@@ -21,7 +22,11 @@ public class DashBoardTest {
     @Rule
     public ActivityTestRule<DashBoard> mActivityRuleTest = new ActivityTestRule<DashBoard>(DashBoard.class);
 
+    @Rule
+    public ActivityTestRule<Register> mRegisterRuleTest = new ActivityTestRule<Register>(Register.class);
+
     DashBoard mActivity = null;
+    Register registerActivty = null;
 
     Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(MainActivity.class.getName(), null, false);
 
@@ -29,11 +34,11 @@ public class DashBoardTest {
     public void setUp() throws Exception {
 
         mActivity = mActivityRuleTest.getActivity();
+        registerActivty = mRegisterRuleTest.getActivity();
     }
 
-
     @Test
-    public void testLanuchOfRegister(){
+    public void testLaunchOfLogin(){
 
         assertNotNull(mActivity.findViewById(R.id.btnGoLogIn));
         onView(withId(R.id.btnGoLogIn)).perform(click());

@@ -53,9 +53,9 @@ public class ReceiptAdapter extends
         TextView nameView = holder.nameTextView;
         nameView.setText(productName);
         TextView prizeView = holder.prizeTextView;
-        prizeView.setText(String.valueOf(productPrize));
+        prizeView.setText(String.valueOf(productPrize) + "zł");
         TextView quantityView = holder.quantityTextView;
-        quantityView.setText(String.valueOf(productQuantity));
+        quantityView.setText("ilość : " + String.valueOf(productQuantity));
     }
 
     @Override
