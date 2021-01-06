@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Random;
@@ -27,6 +29,9 @@ public class Shopping extends AppCompatActivity {
     public static ItemsAdapter adapter;
     private Button buttonAdd;
     private Button buttonEndShopping;
+
+    public static TextView resulttextview;
+    Button scanbutton, buttontoast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,23 @@ public class Shopping extends AppCompatActivity {
         getProducts();
         getShoppingCart();
 
+        resulttextview = findViewById(R.id.barcodetextview);
+        scanbutton = findViewById(R.id.buttonscan);
+        buttontoast = findViewById(R.id.buttontoast);
+
+        scanbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
+            }
+        });
+
+        buttontoast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Shopping.this, resulttextview.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void finalizeShopping () {
