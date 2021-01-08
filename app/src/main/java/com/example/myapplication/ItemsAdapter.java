@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,11 +22,12 @@ public class ItemsAdapter extends
         RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
     private List<CartItem> mItems;
+    private AdapterView.OnItemClickListener mItemClickListener;
 
     public ItemsAdapter(List<CartItem> items) {
         mItems = items;
     }
-
+    
 
     @NonNull
     @Override
@@ -51,10 +54,16 @@ public class ItemsAdapter extends
         TextView quantityView = holder.quantityTextView;
         //quantityView.setText(item.quantity);
         quantityView.setText("ilość : " + String.valueOf(item.quantity));
-        Button removeButton = holder.removeButton;
-        removeButton.setText("Usuń");
-        removeButton.setId(position);
+        //Button removeButton = holder.removeButton;
+        //removeButton.setText("Usuń");
+        //removeButton.setId(position);
+
+        System.out.println("pozycjaBUT: " + position);
+
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -63,7 +72,79 @@ public class ItemsAdapter extends
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    /*
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        public TextView nameTextView;
+        public TextView quantityTextView;
+        public ImageView mImageViewContentPic;
+
+        public ImageView imgViewRemoveIcon;
+        public ViewHolder(View v) {
+            super(v);
+            //mCardView = (CardView) v.findViewById(R.id.card_view);
+            nameTextView = (TextView) v.findViewById(R.id.itemName);
+            quantityTextView = (TextView) v.findViewById(R.id.itemQuantity);
+            //mImageViewContentPic = (ImageView) v.findViewById(R.id.item_content_pic);
+            //......
+            //imgViewRemoveIcon = (ImageView) v.findViewById(R.id.remove_icon);
+
+            quantityTextView.setOnClickListener(this);
+            imgViewRemoveIcon.setOnClickListener(this);
+            v.setOnClickListener(this);
+            quantityTextView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClick(view, getAdapterPosition());
+                    }
+                    return false;
+                }
+            });
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            //Log.d("View: ", v.toString());
+            //Toast.makeText(v.getContext(), mTextViewTitle.getText() + " position = " + getPosition(), Toast.LENGTH_SHORT).show();
+            if(v.equals(imgViewRemoveIcon)){
+                removeAt(getAdapterPosition());
+            }else if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+    }
+
+    public void setOnItemClickListener(final AdapterView.OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
+    }
+    public void removeAt(int position) {
+        mItems.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mItems.size());
+    }
+
+     */
+
+    public void removeAt(int position) {
+
+        mItems.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mItems.size());
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            //Log.d("View: ", v.toString());
+            //Toast.makeText(v.getContext(), mTextViewTitle.getText() + " position = " + getPosition(), Toast.LENGTH_SHORT).show();
+            //removeAt(getAdapterPosition());
+            //deleteProduct();
+
+        }
         // Your holder should contain a member variable
         // for any view that will be set as you render a row
         public TextView nameTextView;
@@ -87,14 +168,18 @@ public class ItemsAdapter extends
                     deleteProduct();
                 }
             });
+
+
         }
 
 
 
         public void deleteProduct() {
 
-            int position = removeButton.getId();
-            String barcode = Shopping.products.get(position).barcode;
+            int position = getAdapterPosition();
+            String barcode = Shopping.shoppingCartProducts.get(position).product.barcode;
+            System.out.println("CODEBAR: " + barcode);
+            System.out.println("POZYCJA: " + position);
 
 
             Call<ShoppingCart> call = MainActivity.shopApi.deleteProduct(barcode);
@@ -106,18 +191,29 @@ public class ItemsAdapter extends
                         System.out.println("my on failure");
                         return;
                     }
+
                     Shopping.shoppingCart = response.body();
-                    Shopping.shoppingCartProducts.clear();
-                    Shopping.adapter.notifyDataSetChanged();
+                    Shopping.productListHash.remove(barcode);
+                    Shopping.shoppingCartProducts.remove(position);
+                    Shopping.adapter.notifyItemRemoved(position);
+                    Shopping.adapter.notifyItemRangeChanged(position, mItems.size());
+
+
+                    /*
+                    Shopping.shoppingCart = response.body();
+                    //Shopping.shoppingCartProducts.clear();
+                    //Shopping.adapter.notifyDataSetChanged();
 
                     List<CartItem> items = Shopping.shoppingCart.items;
 
-                    for(CartItem item : items) {
+                        for(CartItem item : items) {
 
                         Shopping.shoppingCartProducts.add(item);
                         // Notify the adapter that an item was inserted at position 0
                         Shopping.adapter.notifyItemInserted(0);
                     }
+
+                     */
 
                 }
 

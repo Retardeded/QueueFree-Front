@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -25,6 +26,8 @@ public class Shopping extends AppCompatActivity {
 
     public static List<Product> products;
     public static List<CartItem> shoppingCartProducts;
+    public static HashMap<String, Integer> productListHash = new HashMap<>();
+
     public static ShoppingCart shoppingCart;
     public static ItemsAdapter adapter;
     private Button buttonAdd;
@@ -111,15 +114,21 @@ public class Shopping extends AppCompatActivity {
                     return;
                 }
                 Shopping.shoppingCart = response.body();
-                Shopping.shoppingCartProducts.clear();
-                Shopping.adapter.notifyDataSetChanged();
+                //Shopping.shoppingCartProducts.clear();
+                //Shopping.shoppingCartProducts.contains()
+                //Shopping.adapter.notifyDataSetChanged();
 
                 List<CartItem> items = shoppingCart.items;
 
                 for(CartItem item : items) {
 
-                    Shopping.shoppingCartProducts.add(item);
-                    Shopping.adapter.notifyItemInserted(0);
+                    if(!Shopping.productListHash.containsKey(item.product.barcode))
+                    {
+                        Shopping.shoppingCartProducts.add(item);
+                        Shopping.adapter.notifyItemInserted(shoppingCartProducts.size()-1);
+                        Shopping.productListHash.put(item.product.barcode, shoppingCartProducts.size()-1);
+                    }
+
                 }
 
             }
@@ -150,7 +159,6 @@ public class Shopping extends AppCompatActivity {
                 List<CartItem> items = cart.items;
 
                 for(CartItem item : items) {
-
                     shoppingCartProducts.add(item);
                     adapter.notifyItemInserted(0);
                 }

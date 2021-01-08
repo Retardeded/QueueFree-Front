@@ -24,8 +24,12 @@ public interface ShopApi {
     @POST("shoppingCart")
     Call<ShoppingCart> addProduct(@Query("barcode") String barcode);
 
-    @POST("shoppingCart/enter")
+    @POST("shoppingCart/confirmEntry")
     Call<ShoppingCart> enterShop();
+
+    //@POST("/pay")
+    //@POST("physical/scanner/entrance")
+    //Call<> confirmEntrance(@Query("id") Long userId);
 
     @POST("shoppingCart/finalize")
     Call<Receipt> finalizeShop();
