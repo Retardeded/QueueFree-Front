@@ -192,12 +192,24 @@ public class ItemsAdapter extends
                         return;
                     }
 
-                    Shopping.shoppingCart = response.body();
-                    Shopping.productListHash.remove(barcode);
-                    Shopping.shoppingCartProducts.remove(position);
-                    Shopping.adapter.notifyItemRemoved(position);
-                    Shopping.adapter.notifyItemRangeChanged(position, mItems.size());
+                    if(Shopping.shoppingCartProducts.get(position).quantity > 1)
+                    {
+                        CartItem item = Shopping.shoppingCartProducts.get(position);
 
+                        item.quantity = item.quantity-1;
+                        Shopping.adapter.notifyItemChanged(position);
+
+                        Shopping.productListHash.remove(item.product.barcode);
+                        Shopping.productListHash.put(item.product.barcode, new Shopping.CartProductInfo(position, item.quantity));
+                    }
+                    else
+                    {
+                        Shopping.productListHash.remove(barcode);
+                        Shopping.shoppingCartProducts.remove(position);
+                        Shopping.adapter.notifyItemRemoved(position);
+                        Shopping.adapter.notifyItemRangeChanged(position, mItems.size());
+
+                    }
 
                     /*
                     Shopping.shoppingCart = response.body();

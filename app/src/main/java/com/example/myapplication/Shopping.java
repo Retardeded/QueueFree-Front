@@ -12,6 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -23,10 +24,20 @@ import retrofit2.Response;
 
 public class Shopping extends AppCompatActivity {
 
+    static class CartProductInfo
+    {
+        public Integer index;
+        public Integer quantity;
 
-    public static List<Product> products;
-    public static List<CartItem> shoppingCartProducts;
-    public static HashMap<String, Integer> productListHash = new HashMap<>();
+        CartProductInfo(Integer index, Integer quantity){
+            this.index = index;
+            this.quantity = quantity;
+        }
+    };
+
+    public static ArrayList<Product> products = new ArrayList<>();
+    public static ArrayList<CartItem> shoppingCartProducts = new ArrayList<>();
+    public static HashMap<String, CartProductInfo> productListHash = new HashMap<>();
 
     public static ShoppingCart shoppingCart;
     public static ItemsAdapter adapter;
@@ -48,6 +59,8 @@ public class Shopping extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SetRandomProduct();
+                //resulttextview.setText("5900394006235");
                 addProduct();
             }
         });
@@ -60,15 +73,9 @@ public class Shopping extends AppCompatActivity {
             }
         });
 
-        products = Product.createProductList(0);
-
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.et_product_list);
-        shoppingCartProducts = CartItem.createItemList(0);
-        // Create adapter passing in the sample user data
         adapter = new ItemsAdapter(shoppingCartProducts);
-        // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
-        // Set layout manager to position the items
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
         getProducts();
         getShoppingCart();
@@ -98,13 +105,9 @@ public class Shopping extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addProduct() {
+    public static void addProduct() {
 
-        final int random = new Random().nextInt(products.size());
-
-        String barcode = Shopping.products.get(random).barcode;
-
-        Call<ShoppingCart> call = MainActivity.shopApi.addProduct(barcode);
+        Call<ShoppingCart> call = MainActivity.shopApi.addProduct(resulttextview.getText().toString());
         call.enqueue(new Callback<ShoppingCart>() {
             @Override
             public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
@@ -114,19 +117,30 @@ public class Shopping extends AppCompatActivity {
                     return;
                 }
                 Shopping.shoppingCart = response.body();
-                //Shopping.shoppingCartProducts.clear();
-                //Shopping.shoppingCartProducts.contains()
-                //Shopping.adapter.notifyDataSetChanged();
 
                 List<CartItem> items = shoppingCart.items;
 
-                for(CartItem item : items) {
+                for(int i = 0; i < items.size(); i++) {
+
+                    CartItem item = items.get(i);
 
                     if(!Shopping.productListHash.containsKey(item.product.barcode))
                     {
                         Shopping.shoppingCartProducts.add(item);
                         Shopping.adapter.notifyItemInserted(shoppingCartProducts.size()-1);
-                        Shopping.productListHash.put(item.product.barcode, shoppingCartProducts.size()-1);
+
+                        Shopping.productListHash.put(item.product.barcode, new CartProductInfo(shoppingCartProducts.size()-1, item.quantity));
+                    }
+
+                    if(Shopping.productListHash.containsKey(item.product.barcode) && item.quantity != Shopping.productListHash.get(item.product.barcode).quantity)
+                    {
+                        int index = Shopping.productListHash.get(item.product.barcode).index;
+
+                        Shopping.shoppingCartProducts.get(index).quantity = item.quantity;
+                        Shopping.adapter.notifyItemChanged(index);
+
+                        Shopping.productListHash.remove(item.product.barcode);
+                        Shopping.productListHash.put(item.product.barcode, new CartProductInfo(index, item.quantity));
                     }
 
                 }
@@ -140,6 +154,12 @@ public class Shopping extends AppCompatActivity {
         });
 
 
+    }
+
+    private void SetRandomProduct() {
+        final int random = new Random().nextInt(products.size());
+        String barcode = Shopping.products.get(random).barcode;
+        resulttextview.setText(barcode);
     }
 
     public void getShoppingCart() {

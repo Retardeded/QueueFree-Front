@@ -28,13 +28,4 @@ public class Product {
 
     private static int lastProductId = 0;
 
-    public static List<Product> createProductList(int num) {
-        List<Product> products = new ArrayList<Product>();
-
-        for (int i = 1; i <= num; i++) {
-            products.add(new Product(1, "323432", "chleb", 10));
-        }
-
-        return products;
-    }
 }
