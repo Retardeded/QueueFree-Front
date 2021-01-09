@@ -19,6 +19,8 @@ import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -115,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://jsonplaceholder.typicode.com/")
                 //.baseUrl("http://localhost:8080/")
-                //.baseUrl("http://10.0.0.5:8080/")
-                .baseUrl("http://192.168.1.3:8080/")
+                .baseUrl("http://10.0.0.5:8080/")
+                //.baseUrl("http://192.168.1.3:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MainActivity.okHttpClient)
                 .build();
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainPanel.class);
                 startActivity(intent);
 
+                createSocket();
             }
 
             @Override
@@ -143,6 +146,27 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("my on failure2");
             }
         });
+    }
+
+    public void createSocket() {
+        Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
+
+        WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+                webSocket.send("CONNECT\naccept-version:1.1,1.0\n" +
+                        "heart-beat:10000,10000\n\n\0");
+                webSocket.send("SUBSCRIBE\nid:sub-0\ndestination:/user/notification\n\n\0");
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+                System.out.println(text);
+            }
+
+        };
+        MainActivity.okHttpClient.newWebSocket(request, webSocketListenerCoinPrice);
+        MainActivity.okHttpClient.dispatcher().executorService().shutdown();
     }
 
     boolean validateInputs() {
