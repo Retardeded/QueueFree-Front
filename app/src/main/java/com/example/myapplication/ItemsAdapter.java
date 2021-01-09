@@ -1,6 +1,11 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.InputStream;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,10 +41,8 @@ public class ItemsAdapter extends
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        // Inflate the custom layout
         View productView = inflater.inflate(R.layout.item, parent, false);
 
-        // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(productView);
         return viewHolder;
     }
@@ -48,19 +52,52 @@ public class ItemsAdapter extends
 
         CartItem item = mItems.get(position);
 
-        // Set item views based on your views and data model
         TextView textView = holder.nameTextView;
         textView.setText(item.product.getName());
+        String text = "ilość : " + (item.quantity);
         TextView quantityView = holder.quantityTextView;
-        //quantityView.setText(item.quantity);
-        quantityView.setText("ilość : " + String.valueOf(item.quantity));
-        //Button removeButton = holder.removeButton;
-        //removeButton.setText("Usuń");
-        //removeButton.setId(position);
+        quantityView.setText(text);
+        TextView priceView = holder.priceTextView;
+        text = (item.product.price) + " zl";
+        priceView.setText(text);
+        ImageView imgView = holder.img;
 
-        System.out.println("pozycjaBUT: " + position);
+        new DownloadImageTask((ImageView) imgView)
+                .execute(item.product.imageUrl);
+
+        //new DownloadImageTask((ImageView) imgView)
+        //        .execute("https://static.openfoodfacts.org/images/products/590/008/423/4979/front_pl.4.200.jpg");
+
+        //imgView.setImageURI(Uri.parse(item.product.imageUrl));
+        Button removeButton = holder.removeButton;
+        removeButton.setText("Usuń");
+    }
 
 
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
 
@@ -69,64 +106,6 @@ public class ItemsAdapter extends
     public int getItemCount() {
         return mItems.size();
     }
-
-    // Provide a direct reference to each of the views within a data item
-    // Used to cache the views within the item layout for fast access
-
-
-    /*
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView nameTextView;
-        public TextView quantityTextView;
-        public ImageView mImageViewContentPic;
-
-        public ImageView imgViewRemoveIcon;
-        public ViewHolder(View v) {
-            super(v);
-            //mCardView = (CardView) v.findViewById(R.id.card_view);
-            nameTextView = (TextView) v.findViewById(R.id.itemName);
-            quantityTextView = (TextView) v.findViewById(R.id.itemQuantity);
-            //mImageViewContentPic = (ImageView) v.findViewById(R.id.item_content_pic);
-            //......
-            //imgViewRemoveIcon = (ImageView) v.findViewById(R.id.remove_icon);
-
-            quantityTextView.setOnClickListener(this);
-            imgViewRemoveIcon.setOnClickListener(this);
-            v.setOnClickListener(this);
-            quantityTextView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemClick(view, getAdapterPosition());
-                    }
-                    return false;
-                }
-            });
-        }
-
-
-        @Override
-        public void onClick(View v) {
-            //Log.d("View: ", v.toString());
-            //Toast.makeText(v.getContext(), mTextViewTitle.getText() + " position = " + getPosition(), Toast.LENGTH_SHORT).show();
-            if(v.equals(imgViewRemoveIcon)){
-                removeAt(getAdapterPosition());
-            }else if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, getAdapterPosition());
-            }
-        }
-    }
-
-    public void setOnItemClickListener(final AdapterView.OnItemClickListener mItemClickListener) {
-        this.mItemClickListener = mItemClickListener;
-    }
-    public void removeAt(int position) {
-        mItems.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mItems.size());
-    }
-
-     */
 
     public void removeAt(int position) {
 
@@ -145,21 +124,20 @@ public class ItemsAdapter extends
             //deleteProduct();
 
         }
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
         public TextView nameTextView;
         public TextView quantityTextView;
+        public TextView priceTextView;
+        public ImageView img;
         public Button removeButton;
 
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
+
         public ViewHolder(View itemView) {
-            // Stores the itemView in a public final member variable that can be used
-            // to access the context from any ViewHolder instance.
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.itemName);
             quantityTextView = (TextView) itemView.findViewById(R.id.itemQuantity);
+            priceTextView = (TextView) itemView.findViewById(R.id.itemPrice);
+            img = itemView.findViewById(R.id.itemImg);
             removeButton = (Button) itemView.findViewById(R.id.btnRemoveProduct);
 
             removeButton.setOnClickListener(new View.OnClickListener() {
@@ -178,9 +156,6 @@ public class ItemsAdapter extends
 
             int position = getAdapterPosition();
             String barcode = Shopping.shoppingCartProducts.get(position).product.barcode;
-            System.out.println("CODEBAR: " + barcode);
-            System.out.println("POZYCJA: " + position);
-
 
             Call<ShoppingCart> call = MainActivity.shopApi.deleteProduct(barcode);
             call.enqueue(new Callback<ShoppingCart>() {
@@ -210,22 +185,6 @@ public class ItemsAdapter extends
                         Shopping.adapter.notifyItemRangeChanged(position, mItems.size());
 
                     }
-
-                    /*
-                    Shopping.shoppingCart = response.body();
-                    //Shopping.shoppingCartProducts.clear();
-                    //Shopping.adapter.notifyDataSetChanged();
-
-                    List<CartItem> items = Shopping.shoppingCart.items;
-
-                        for(CartItem item : items) {
-
-                        Shopping.shoppingCartProducts.add(item);
-                        // Notify the adapter that an item was inserted at position 0
-                        Shopping.adapter.notifyItemInserted(0);
-                    }
-
-                     */
 
                 }
 

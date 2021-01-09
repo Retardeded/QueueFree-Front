@@ -10,12 +10,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ShoppingFinalize"></activity>
+        <activity android:name=".LeavingShop"></activity>
+        <activity android:name=".ShoppingFinalize" />
         <activity android:name=".DashBoard" />
         <activity android:name=".Register" />
         <activity android:name=".ClientPanel" />
         <activity android:name=".Shopping" />
-        <activity android:name=".ScanCodeActivity"/>
+        <activity android:name=".ScanCodeActivity" />
         <activity android:name=".MainPanel" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -25,11 +26,12 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.Camera.autofocus" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

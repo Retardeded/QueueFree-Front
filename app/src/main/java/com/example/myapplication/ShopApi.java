@@ -27,9 +27,12 @@ public interface ShopApi {
     @POST("shoppingCart/confirmEntry")
     Call<ShoppingCart> enterShop();
 
-    //@POST("/pay")
-    //@POST("physical/scanner/entrance")
-    //Call<> confirmEntrance(@Query("id") Long userId);
+    @POST("shoppingCart/pay")
+    Call<Void> payBill();
+
+    @POST("shoppingCart/confirmExit")
+    Call<Void> confirmExit();
+
 
     @POST("shoppingCart/finalize")
     Call<Receipt> finalizeShop();

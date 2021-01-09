@@ -107,7 +107,8 @@ public class Shopping extends AppCompatActivity {
 
     public static void addProduct() {
 
-        Call<ShoppingCart> call = MainActivity.shopApi.addProduct(resulttextview.getText().toString());
+        String barcode = resulttextview.getText().toString();
+        Call<ShoppingCart> call = MainActivity.shopApi.addProduct(barcode);
         call.enqueue(new Callback<ShoppingCart>() {
             @Override
             public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
@@ -120,6 +121,17 @@ public class Shopping extends AppCompatActivity {
 
                 List<CartItem> items = shoppingCart.items;
 
+                if(Shopping.productListHash.containsKey(barcode))
+                {
+                    int index = Shopping.productListHash.get(barcode).index;
+
+                    Shopping.shoppingCartProducts.get(index).quantity += 1;
+                    Shopping.adapter.notifyItemChanged(index);
+
+                    Shopping.productListHash.remove(barcode);
+                    Shopping.productListHash.put(barcode, new CartProductInfo(index, Shopping.shoppingCartProducts.get(index).quantity));
+                }
+
                 for(int i = 0; i < items.size(); i++) {
 
                     CartItem item = items.get(i);
@@ -130,17 +142,6 @@ public class Shopping extends AppCompatActivity {
                         Shopping.adapter.notifyItemInserted(shoppingCartProducts.size()-1);
 
                         Shopping.productListHash.put(item.product.barcode, new CartProductInfo(shoppingCartProducts.size()-1, item.quantity));
-                    }
-
-                    if(Shopping.productListHash.containsKey(item.product.barcode) && item.quantity != Shopping.productListHash.get(item.product.barcode).quantity)
-                    {
-                        int index = Shopping.productListHash.get(item.product.barcode).index;
-
-                        Shopping.shoppingCartProducts.get(index).quantity = item.quantity;
-                        Shopping.adapter.notifyItemChanged(index);
-
-                        Shopping.productListHash.remove(item.product.barcode);
-                        Shopping.productListHash.put(item.product.barcode, new CartProductInfo(index, item.quantity));
                     }
 
                 }
@@ -157,7 +158,8 @@ public class Shopping extends AppCompatActivity {
     }
 
     private void SetRandomProduct() {
-        final int random = new Random().nextInt(products.size());
+        int random = new Random().nextInt(10);
+        random += 10;
         String barcode = Shopping.products.get(random).barcode;
         resulttextview.setText(barcode);
     }

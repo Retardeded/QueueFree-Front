@@ -17,11 +17,29 @@
         />
 
     <TextView
-        android:id="@+id/itemQuantity"
+        android:id="@+id/itemPrice"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="left"
+        android:textSize="12sp"
+        />
+
+    <ImageView
+        android:id="@+id/itemImg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/itemQuantity"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
         android:textSize="12sp"
         />
 

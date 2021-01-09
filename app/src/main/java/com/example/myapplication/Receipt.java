@@ -5,14 +5,7 @@ import java.util.List;
 public class Receipt {
 
     long id;
-
     User user;
-
+    List<ReceiptItem> items;
     int total;
-
-    List<String> productsNames;
-
-    List<Integer> productsPrices;
-
-    List<Integer> productsQuantities;
 }

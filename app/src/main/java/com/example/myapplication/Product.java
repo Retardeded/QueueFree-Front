@@ -1,22 +1,18 @@
 package com.example.myapplication;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Product {
     long id;
-    //@SerializedName("body")
     String barcode;
     String name;
-    int cost;
+    int price;
+    String imageUrl;
 
-    Product(long id, String barcode, String name, int cost){
+    Product(long id, String barcode, String name, int price, String imageUrl){
         this.id = id;
         this.barcode = barcode;
         this.name = name;
-        this.cost = cost;
+        this.price = price;
+        this.imageUrl = imageUrl;
     }
     public String getName() {
         return name;

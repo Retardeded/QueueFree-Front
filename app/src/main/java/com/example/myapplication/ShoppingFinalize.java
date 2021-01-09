@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -17,9 +20,10 @@ import retrofit2.Response;
 public class ShoppingFinalize extends AppCompatActivity {
 
     Receipt receipt;
-    public ArrayList<ReceiptItem> receiptItems;
+    public ArrayList<ReceiptItem> receiptItems = new ArrayList<>();
     public ReceiptAdapter receiptAdapter;
     TextView billView;
+    Button buttonPay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +33,42 @@ public class ShoppingFinalize extends AppCompatActivity {
         billView = findViewById(R.id.et_bill_cost);
 
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.et_receipt_list);
-        receiptItems = ReceiptItem.createItemList(0);
         receiptAdapter = new ReceiptAdapter(receiptItems);
         rvContacts.setAdapter(receiptAdapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         shoppingFinalize();
+
+        buttonPay = findViewById(R.id.btnPay);
+        buttonPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payForProducts();
+            }
+        });
+    }
+
+    public void payForProducts() {
+
+        Call<Void> call = MainActivity.shopApi.payBill();
+        call.enqueue(new Callback<Void>() {
+
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    System.out.println("my on failure");
+                    return;
+                }
+
+                Intent intent = new Intent(getApplicationContext(), LeavingShop.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("my on failure2");
+            }
+        });
     }
 
 
@@ -50,21 +84,15 @@ public class ShoppingFinalize extends AppCompatActivity {
                     return;
                 }
                 receipt = response.body();
-                receiptItems.clear();
-                receiptAdapter.notifyDataSetChanged();
-                int cost = 0;
+                List<ReceiptItem> items = receipt.items;
+                int cost = receipt.total;
 
-                for(int i = 0; i < receipt.productsNames.size(); i++) {
-
-                    String name = receipt.productsNames.get(i);
-                    Integer price = receipt.productsPrices.get(i);
-                    Integer quantity = receipt.productsQuantities.get(i);
-
-                    cost += quantity * price;
-
-                    ReceiptItem item = new ReceiptItem(name, price, quantity);
-                    receiptItems.add(item);
-                    receiptAdapter.notifyItemInserted(0);
+                System.out.println("TUUU" + items);
+                System.out.println("TUU2" + items.get(0));
+                for(int i = 0; i < items.size(); i++) {
+                    receiptItems.add(items.get(i));
+                    //System.out.println("STATY:: " + items.get(i).productPrice + " " + items.get(i).productQuantity + " " + items.get(i).productName);
+                    receiptAdapter.notifyItemInserted(receiptItems.size()-1);
                 }
 
                 billView.setText("Do zapłaty: " + cost + "zł");
