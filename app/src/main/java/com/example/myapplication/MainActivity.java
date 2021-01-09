@@ -8,8 +8,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.myapplication.activities.MainPanel;
+import com.example.myapplication.activities.Register;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -19,8 +19,8 @@ import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.WebSocket;
-import okhttp3.WebSocketListener;
+//import okhttp3.WebSocket;
+//import okhttp3.WebSocketListener;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://jsonplaceholder.typicode.com/")
                 //.baseUrl("http://localhost:8080/")
-                .baseUrl("http://10.0.0.5:8080/")
-                //.baseUrl("http://192.168.1.3:8080/")
+                //.baseUrl("http://10.0.0.5:8080/")
+                .baseUrl("http://192.168.1.3:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MainActivity.okHttpClient)
                 .build();
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainPanel.class);
                 startActivity(intent);
 
-                createSocket();
+                //createSocket();
             }
 
             @Override
@@ -149,7 +149,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createSocket() {
-        Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
+        /*
+        //Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
+        Request request = new Request.Builder().url("ws://192.168.1.3:8080/websocket").build();
 
         WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
             @Override
@@ -167,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
         };
         MainActivity.okHttpClient.newWebSocket(request, webSocketListenerCoinPrice);
         MainActivity.okHttpClient.dispatcher().executorService().shutdown();
+
+         */
     }
 
     boolean validateInputs() {

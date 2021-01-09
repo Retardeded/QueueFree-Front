@@ -1,5 +1,9 @@
 package com.example.myapplication;
 
+import com.example.myapplication.model.Product;
+import com.example.myapplication.model.Receipt;
+import com.example.myapplication.model.ShoppingCart;
+
 import java.util.HashMap;
 import java.util.List;
 

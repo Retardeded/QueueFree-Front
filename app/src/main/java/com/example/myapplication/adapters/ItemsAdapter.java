@@ -1,9 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +15,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.R;
+import com.example.myapplication.model.ShoppingCart;
+import com.example.myapplication.activities.Shopping;
+import com.example.myapplication.model.CartItem;
 
 import java.io.InputStream;
 import java.util.List;

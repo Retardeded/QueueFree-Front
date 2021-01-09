@@ -1,7 +1,6 @@
-package com.example.myapplication;
+package com.example.myapplication.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.myapplication.model.Receipt;
 
 public class ReceiptItem {
 

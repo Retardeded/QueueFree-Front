@@ -10,26 +10,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LeavingShop"></activity>
-        <activity android:name=".ShoppingFinalize" />
-        <activity android:name=".DashBoard" />
-        <activity android:name=".Register" />
-        <activity android:name=".ClientPanel" />
-        <activity android:name=".Shopping" />
-        <activity android:name=".ScanCodeActivity" />
-        <activity android:name=".MainPanel" />
-        <activity android:name=".MainActivity">
+
+        <activity android:name=".MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.LeavingShop" />
+        <activity android:name=".activities.ShoppingFinalize" />
+        <activity android:name=".activities.DashBoard" />
+        <activity android:name=".activities.Register" />
+        <activity android:name=".activities.ClientPanel" />
+        <activity android:name=".activities.Shopping" />
+        <activity android:name=".activities.ScanCodeActivity" />
+        <activity android:name=".activities.MainPanel" />
     </application>
+
     <uses-feature android:name="android.hardware.Camera.autofocus" />
-
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-permission android:name="android.permission.CAMERA" />

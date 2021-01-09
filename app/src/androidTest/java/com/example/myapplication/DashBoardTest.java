@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Intent;
 
 import androidx.test.rule.ActivityTestRule;
 

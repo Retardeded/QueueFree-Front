@@ -1,7 +1,4 @@
-package com.example.myapplication;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.example.myapplication.model;
 
 public class CartItem {
 

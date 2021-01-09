@@ -2,11 +2,10 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.test.rule.ActivityTestRule;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +12,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.adapters.ItemsAdapter;
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.R;
+import com.example.myapplication.model.ShoppingCart;
+import com.example.myapplication.model.CartItem;
+import com.example.myapplication.model.Product;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +31,12 @@ import retrofit2.Response;
 
 public class Shopping extends AppCompatActivity {
 
-    static class CartProductInfo
+    public static class CartProductInfo
     {
         public Integer index;
         public Integer quantity;
 
-        CartProductInfo(Integer index, Integer quantity){
+        public CartProductInfo(Integer index, Integer quantity){
             this.index = index;
             this.quantity = quantity;
         }
@@ -42,10 +49,11 @@ public class Shopping extends AppCompatActivity {
     public static ShoppingCart shoppingCart;
     public static ItemsAdapter adapter;
     private Button buttonAdd;
+    private Button buttonGen;
     private Button buttonEndShopping;
 
     public static TextView resulttextview;
-    Button scanbutton, buttontoast;
+    Button scanbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +67,15 @@ public class Shopping extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetRandomProduct();
-                //resulttextview.setText("5900394006235");
                 addProduct();
+            }
+        });
+
+        buttonGen = findViewById(R.id.btnGen);
+        buttonGen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetRandomProduct();
             }
         });
 
@@ -82,7 +96,6 @@ public class Shopping extends AppCompatActivity {
 
         resulttextview = findViewById(R.id.barcodetextview);
         scanbutton = findViewById(R.id.buttonscan);
-        buttontoast = findViewById(R.id.buttontoast);
 
         scanbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +104,6 @@ public class Shopping extends AppCompatActivity {
             }
         });
 
-        buttontoast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Shopping.this, resulttextview.getText(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void finalizeShopping () {
