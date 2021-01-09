@@ -56,16 +56,15 @@
         android:text="@string/login"/>
 
     <TextView
-        android:layout_below="@id/btnLogin"
         android:id="@+id/registerText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/btnLogin"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="100dp"
         android:text="W przypadku braku konta"
         android:textAlignment="center"
-        android:textSize="20sp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="200dp"
-        />
+        android:textSize="20sp" />
 
     <Button
         android:layout_below="@id/registerText"

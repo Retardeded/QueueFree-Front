@@ -60,9 +60,6 @@ public class Shopping extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
 
-        TableRow tableRow = (TableRow) findViewById(R.id.TableRow001);
-        tableRow.setVisibility(View.INVISIBLE);
-
         buttonAdd = findViewById(R.id.btnAdd);
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
