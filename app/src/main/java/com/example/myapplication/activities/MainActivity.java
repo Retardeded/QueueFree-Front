@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.activities.MainPanel;
-import com.example.myapplication.activities.Register;
+import com.example.myapplication.R;
+import com.example.myapplication.ShopApi;
 
 import java.io.IOException;
 import java.net.CookieManager;

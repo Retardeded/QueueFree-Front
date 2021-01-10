@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.MainActivity;
+import com.example.myapplication.activities.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.model.ShoppingCart;
 import com.example.myapplication.activities.Shopping;

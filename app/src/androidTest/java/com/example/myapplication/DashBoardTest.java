@@ -5,6 +5,8 @@ import android.app.Instrumentation;
 
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.myapplication.activities.MainActivity;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.myapplication.activities.MainActivity;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
