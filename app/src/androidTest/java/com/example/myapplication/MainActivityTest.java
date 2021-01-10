@@ -6,7 +6,10 @@ import android.widget.TextView;
 
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.myapplication.activities.DashBoard;
 import com.example.myapplication.activities.MainActivity;
+import com.example.myapplication.activities.MainPanel;
+import com.example.myapplication.activities.Register;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -23,11 +26,12 @@ import static org.junit.Assert.*;
 public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRuleTest = new ActivityTestRule<MainActivity>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mActivityRuleTest = new ActivityTestRule<>(MainActivity.class);
 
     MainActivity mActivity = null;
 
-    Instrumentation.ActivityMonitor monitor = getInstrumentation().addMonitor(MainPanel.class.getName(), null, false);
+    Instrumentation.ActivityMonitor registerMonitor = getInstrumentation().addMonitor(Register.class.getName(), null, false);
+    Instrumentation.ActivityMonitor mainPanelMonitor = getInstrumentation().addMonitor(MainPanel.class.getName(), null, false);
 
     @Before
     public void setUp() throws Exception {
@@ -40,13 +44,20 @@ public class MainActivityTest {
 
         assertNotNull(mActivity.findViewById(R.id.btnDoRegister));
         onView(withId(R.id.btnDoRegister)).perform(click());
-
-        Activity register = getInstrumentation().waitForMonitorWithTimeout(monitor,5000);
-
+        Activity register = getInstrumentation().waitForMonitorWithTimeout(registerMonitor,5000);
         assertNotNull(register);
-
+        register.finish();
     }
 
+    @Test
+    public void testLanuchOfMainPanel(){
+
+        mActivity.lanuchOfMainPanel();
+        Activity mainPanel = getInstrumentation().waitForMonitorWithTimeout(mainPanelMonitor,5000);
+        assertNotNull(mainPanel);
+    }
+
+    /*
     @Test
     public void testLogIn(){
 
@@ -67,6 +78,8 @@ public class MainActivityTest {
         assertNotNull(mainPanel);
 
     }
+
+     */
 
     @Test
     public void emptyNameTest() {
@@ -93,6 +106,23 @@ public class MainActivityTest {
         mActivity.password = "som";
 
         Assert.assertTrue(mActivity.validateInputs());
+    }
+
+    @Test
+    public void autoFillTest() {
+
+        assertNotNull(mActivity.findViewById(R.id.etLoginUsername));
+        assertNotNull(mActivity.findViewById(R.id.etLoginPassword));
+
+        TextView loginText = mActivity.findViewById(R.id.etLoginUsername);
+        TextView passwordText = mActivity.findViewById(R.id.etLoginPassword);
+
+        String login = "this";
+        String password = "guy";
+
+        mActivity.autoFillCredentials(login, password);
+        Assert.assertEquals(loginText.getText().toString(), login);
+        Assert.assertEquals(passwordText.getText().toString(), password);
     }
 
 

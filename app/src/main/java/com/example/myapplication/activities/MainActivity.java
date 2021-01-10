@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button buttonLogIn;
     private Button buttonRegister;
-    String user = "user";
-    String password = "haslo";
+    public String user = "user";
+    public String password = "haslo";
     private static final String KEY_EMPTY = "";
 
     @Override
@@ -49,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         loginText = findViewById(R.id.etLoginUsername);
         passwordText = findViewById(R.id.etLoginPassword);
 
-        autoFillCredentials();
+        autoFillCredentials(user, password);
         setUpButtons();
 
         createClient();
 
     }
 
-    void createClient() {
+    public void createClient() {
         CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if(validateInputs()) {
                     logIn();
+                } else {
+                    Toast.makeText(MainActivity.this, "Wypełnij pola loginu i hasła", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -102,14 +105,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void autoFillCredentials() {
+    public void autoFillCredentials(String user, String password) {
         loginText.setText(user);
         passwordText.setText(password);
     }
 
     public void doRegister() {
-        Intent intent = new Intent(getApplicationContext(), Register.class);
+        Intent intent = new Intent(MainActivity.this, Register.class);
         startActivity(intent);
+        finish();
     }
 
     public void logIn() {
@@ -135,8 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 System.out.println("login succes");
-                Intent intent = new Intent(getApplicationContext(), MainPanel.class);
-                startActivity(intent);
+                lanuchOfMainPanel();
 
                 //createSocket();
             }
@@ -146,6 +149,11 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("my on failure2");
             }
         });
+    }
+
+    public void lanuchOfMainPanel() {
+        Intent intent = new Intent(getApplicationContext(), MainPanel.class);
+        startActivity(intent);
     }
 
     public void createSocket() {
@@ -173,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
          */
     }
 
-    boolean validateInputs() {
+    public boolean validateInputs() {
 
         if (KEY_EMPTY.equals(user)) {
             return false;

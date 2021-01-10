@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 import com.example.myapplication.R;
@@ -25,15 +26,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Register extends AppCompatActivity {
 
     private static final String KEY_EMPTY = "";
-    private EditText etUsername;
-    private EditText etPassword;
-    private EditText etConfirmPassword;
-    private EditText etFullName;
-    String user;
-    String password;
-    String confirmPassword;
-    String fullName;
+    public EditText etUsername;
+    public EditText etPassword;
+    public EditText etConfirmPassword;
+    public EditText etFullName;
+    public String user;
+    public String password;
+    public String confirmPassword;
+    public String fullName;
     private ProgressDialog pDialog;
+    public String msg;
 
 
     @Override
@@ -41,15 +43,9 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        etFullName = findViewById(R.id.etFullName);
+        setUpEditTexts();
 
         Button register = findViewById(R.id.btnRegister);
-
-
-        //Launch Login screen when Login Button is clicked
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +56,24 @@ public class Register extends AppCompatActivity {
                 password = etPassword.getText().toString();
                 confirmPassword = etConfirmPassword.getText().toString();
                 fullName = etFullName.getText().toString();
+
+                msg = "Wypełnij wymagane pola";
                 if (validateInputs()) {
                     registerUser();
+                } else {
+                    Toast.makeText(Register.this, msg, Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
+    }
+
+    public void setUpEditTexts() {
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
+        etConfirmPassword = findViewById(R.id.etConfirmPassword);
+        etFullName = findViewById(R.id.etFullName);
     }
 
     /**
@@ -84,7 +91,7 @@ public class Register extends AppCompatActivity {
     /**
      * Launch Dashboard Activity on Successful Sign Up
      */
-    void loadDashboard() {
+    public void loadDashboard() {
         Intent i = new Intent(getApplicationContext(), DashBoard.class);
         i.putExtra("userInfo", user + " " + password);
         startActivity(i);
@@ -137,32 +144,23 @@ public class Register extends AppCompatActivity {
      * Validates inputs and shows error if any
      * @return
      */
-    boolean validateInputs() {
+    public boolean validateInputs() {
         if (KEY_EMPTY.equals(fullName)) {
-            etFullName.setError("Full Name cannot be empty");
-            etFullName.requestFocus();
             return false;
 
         }
         if (KEY_EMPTY.equals(user)) {
-            etUsername.setError("Username cannot be empty");
-            etUsername.requestFocus();
             return false;
         }
         if (KEY_EMPTY.equals(password)) {
-            etPassword.setError("Password cannot be empty");
-            etPassword.requestFocus();
             return false;
         }
 
         if (KEY_EMPTY.equals(confirmPassword)) {
-            etConfirmPassword.setError("Confirm Password cannot be empty");
-            etConfirmPassword.requestFocus();
             return false;
         }
         if (!password.equals(confirmPassword)) {
-            etConfirmPassword.setError("Password and Confirm Password does not match");
-            etConfirmPassword.requestFocus();
+            msg = "Pola hasło i potwierdź hasło nie są takie same";
             return false;
         }
 
