@@ -42,7 +42,9 @@ public class ShoppingFinalize extends AppCompatActivity {
         rvContacts.setAdapter(receiptAdapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
-        shoppingFinalize();
+        if(MainActivity.shopApi != null) {
+            shoppingFinalize();
+        }
 
         buttonPay = findViewById(R.id.btnPay);
         buttonPay.setOnClickListener(new View.OnClickListener() {
@@ -65,8 +67,7 @@ public class ShoppingFinalize extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent = new Intent(getApplicationContext(), LeavingShop.class);
-                startActivity(intent);
+                launchLeavingShop();
             }
 
             @Override
@@ -74,6 +75,11 @@ public class ShoppingFinalize extends AppCompatActivity {
                 System.out.println("my on failure2");
             }
         });
+    }
+
+    public void launchLeavingShop() {
+        Intent intent = new Intent(getApplicationContext(), LeavingShop.class);
+        startActivity(intent);
     }
 
 

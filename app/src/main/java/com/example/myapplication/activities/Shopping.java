@@ -85,8 +85,10 @@ public class Shopping extends AppCompatActivity {
         adapter = new ItemsAdapter(shoppingCartProducts);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        getProducts();
-        getShoppingCart();
+        if(MainActivity.shopApi != null){
+            getProducts();
+            getShoppingCart();
+        }
 
         resulttextview = findViewById(R.id.barcodetextview);
         scanbutton = findViewById(R.id.buttonscan);

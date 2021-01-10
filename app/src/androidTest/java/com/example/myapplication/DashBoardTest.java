@@ -27,7 +27,7 @@ public class DashBoardTest {
     //@Rule
     //public ActivityTestRule<Register> mRegisterRuleTest = new ActivityTestRule<>(Register.class);
 
-    DashBoard mActivity = null;
+    DashBoard mDashBoard = null;
     //Register registerActivty = null;
 
     Instrumentation.ActivityMonitor mainActivityMonitor = getInstrumentation().addMonitor(MainActivity.class.getName(), null, false);
@@ -35,14 +35,14 @@ public class DashBoardTest {
     @Before
     public void setUp() throws Exception {
 
-        mActivity = mActivityRuleTest.getActivity();
+        mDashBoard = mActivityRuleTest.getActivity();
         //registerActivty = mRegisterRuleTest.getActivity();
     }
 
     @Test
     public void testLaunchOfMainActivty(){
 
-        assertNotNull(mActivity.findViewById(R.id.btnGoLogIn));
+        assertNotNull(mDashBoard.findViewById(R.id.btnGoLogIn));
         onView(withId(R.id.btnGoLogIn)).perform(click());
         Activity mainActivity = getInstrumentation().waitForMonitorWithTimeout(mainActivityMonitor,5000);
         assertNotNull(mainActivity);
