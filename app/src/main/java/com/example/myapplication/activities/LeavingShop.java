@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.ApiException;
+import com.google.gson.Gson;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +44,13 @@ public class LeavingShop extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
-                    System.out.println("my on failure");
+                    try {
+                        Gson gson = new Gson();
+                        ApiException apiException = gson.fromJson(response.errorBody().string(), ApiException.class);
+                        Toast.makeText(getApplicationContext(), apiException.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     return;
                 }
 
@@ -50,7 +60,7 @@ public class LeavingShop extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                System.out.println("my on failure2");
+                Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
     }

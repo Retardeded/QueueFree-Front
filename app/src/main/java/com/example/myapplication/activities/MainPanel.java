@@ -6,8 +6,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.ApiException;
+import com.example.myapplication.model.CartItem;
+import com.example.myapplication.model.ShoppingCart;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainPanel extends AppCompatActivity {
 
@@ -44,9 +56,30 @@ public class MainPanel extends AppCompatActivity {
     }
 
     public void startShopping() {
+        Call<ShoppingCart> call = MainActivity.shopApi.enterShop();
+        call.enqueue(new Callback<ShoppingCart>() {
 
-        Intent intent = new Intent(getApplicationContext(), Shopping.class);
-        startActivity(intent);
+            @Override
+            public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
+                if (!response.isSuccessful()) {
+                    try {
+                        Gson gson = new Gson();
+                        ApiException apiException = gson.fromJson(response.errorBody().string(), ApiException.class);
+                        Toast.makeText(MainPanel.this, apiException.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+
+                Intent intent = new Intent(getApplicationContext(), Shopping.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<ShoppingCart> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
-
 }

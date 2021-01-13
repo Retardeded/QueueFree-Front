@@ -22,6 +22,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 //import okhttp3.WebSocket;
 //import okhttp3.WebSocketListener;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 user = loginText.getText().toString();
                 password = passwordText.getText().toString();
 
-                if(validateInputs()) {
+                if (validateInputs()) {
                     logIn();
                 } else {
                     Toast.makeText(MainActivity.this, "Wypełnij pola loginu i hasła", Toast.LENGTH_SHORT).show();
@@ -121,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://jsonplaceholder.typicode.com/")
                 //.baseUrl("http://localhost:8080/")
-                //.baseUrl("http://10.0.0.5:8080/")
-                .baseUrl("http://192.168.1.3:8080/")
+                .baseUrl("http://10.0.0.5:8080/")
+                //.baseUrl("http://192.168.1.3:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MainActivity.okHttpClient)
                 .build();
@@ -135,18 +137,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
-                    System.out.println("my on failure");
+                    Toast.makeText(MainActivity.this, "Bad credentials", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                System.out.println("login succes");
                 lanuchOfMainPanel();
-
-                //createSocket();
+                createSocket();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                System.out.println("my on failure2");
+                Toast.makeText(MainActivity.this, "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -157,9 +157,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createSocket() {
-        /*
-        //Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
-        Request request = new Request.Builder().url("ws://192.168.1.3:8080/websocket").build();
+        Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
+        //Request request = new Request.Builder().url("ws://192.168.1.3:8080/websocket").build();
 
         WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
             @Override
@@ -170,15 +169,29 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onMessage(WebSocket webSocket, String text) {
-                System.out.println(text);
+            public void onMessage(WebSocket webSocket, String body) {
+                String[] split = body.split("\n\n");
+                if (split.length < 2)
+                    return;
+
+                String message = split[1];
+                if(message.length() == 1)
+                    return;
+
+                System.out.println(body);
+                System.out.println(message.length());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
         };
         MainActivity.okHttpClient.newWebSocket(request, webSocketListenerCoinPrice);
-        MainActivity.okHttpClient.dispatcher().executorService().shutdown();
-
-         */
+        MainActivity.okHttpClient.dispatcher().executorService();
     }
 
     public boolean validateInputs() {

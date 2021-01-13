@@ -14,7 +14,10 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ShopApi;
+import com.example.myapplication.model.ApiException;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -122,8 +125,13 @@ public class Register extends AppCompatActivity {
                 pDialog.dismiss();
 
                 if (!response.isSuccessful()) {
-                    //Toast.makeText(getApplicationContext(), "STRING MESSAGE", Toast.LENGTH_LONG).show();
-                    System.out.println("my on failure");
+                    try {
+                        Gson gson = new Gson();
+                        ApiException apiException = gson.fromJson(response.errorBody().string(), ApiException.class);
+                        Toast.makeText(getApplicationContext(), apiException.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     return;
                 }
                 System.out.println("register succes");
@@ -134,7 +142,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
                 pDialog.dismiss();
-                System.out.println("my on failure2");
+                Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
 

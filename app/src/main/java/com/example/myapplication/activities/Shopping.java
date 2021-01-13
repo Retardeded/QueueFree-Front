@@ -9,13 +9,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.adapters.ItemsAdapter;
 import com.example.myapplication.R;
+import com.example.myapplication.model.ApiException;
 import com.example.myapplication.model.ShoppingCart;
 import com.example.myapplication.model.CartItem;
 import com.example.myapplication.model.Product;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +59,7 @@ public class Shopping extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getProducts();
         setContentView(R.layout.activity_shopping);
 
         buttonAdd = findViewById(R.id.btnAdd);
@@ -85,10 +90,6 @@ public class Shopping extends AppCompatActivity {
         adapter = new ItemsAdapter(shoppingCartProducts);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-        if(MainActivity.shopApi != null){
-            getProducts();
-            getShoppingCart();
-        }
 
         resulttextview = findViewById(R.id.barcodetextview);
         scanbutton = findViewById(R.id.buttonscan);
@@ -103,21 +104,24 @@ public class Shopping extends AppCompatActivity {
     }
 
     public void finalizeShopping () {
-
         Intent intent = new Intent(getApplicationContext(), ShoppingFinalize.class);
         startActivity(intent);
     }
 
-    public static void addProduct() {
-
+    public void addProduct() {
         String barcode = resulttextview.getText().toString();
         Call<ShoppingCart> call = MainActivity.shopApi.addProduct(barcode);
         call.enqueue(new Callback<ShoppingCart>() {
             @Override
             public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
-
                 if (!response.isSuccessful()) {
-                    System.out.println("my on failure");
+                    try {
+                        Gson gson = new Gson();
+                        ApiException apiException = gson.fromJson(response.errorBody().string(), ApiException.class);
+                        Toast.makeText(Shopping.this, apiException.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     return;
                 }
                 Shopping.shoppingCart = response.body();
@@ -146,56 +150,23 @@ public class Shopping extends AppCompatActivity {
 
                         Shopping.productListHash.put(item.product.barcode, new CartProductInfo(shoppingCartProducts.size()-1, item.quantity));
                     }
-
                 }
-
             }
 
             @Override
             public void onFailure(Call<ShoppingCart> call, Throwable t) {
-                System.out.println("my on failure2");
+                Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
     private void SetRandomProduct() {
         int random = new Random().nextInt(10);
         random += 10;
+        if(Shopping.products.size() <= random)
+            return;
         String barcode = Shopping.products.get(random).barcode;
         resulttextview.setText(barcode);
-    }
-
-    public void getShoppingCart() {
-
-        Call<ShoppingCart> call = MainActivity.shopApi.enterShop();
-        call.enqueue(new Callback<ShoppingCart>() {
-
-            @Override
-            public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
-                if (!response.isSuccessful()) {
-                    System.out.println("my on failure");
-                    return;
-                }
-                ShoppingCart cart = response.body();
-                shoppingCartProducts.clear();
-                adapter.notifyDataSetChanged();
-                List<CartItem> items = cart.items;
-
-                for(CartItem item : items) {
-                    shoppingCartProducts.add(item);
-                    adapter.notifyItemInserted(0);
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ShoppingCart> call, Throwable t) {
-                System.out.println("my on failure2");
-            }
-        });
-
     }
 
     public void getProducts() {
@@ -205,7 +176,7 @@ public class Shopping extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (!response.isSuccessful()) {
-                    System.out.println("my on failure");
+                    Toast.makeText(Shopping.this, response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 List<Product> productsList = response.body();
@@ -213,15 +184,13 @@ public class Shopping extends AppCompatActivity {
                 for(Product product : productsList) {
                     products.add(product);
                 }
-
             }
 
             @Override
             public void onFailure(Call<List<Product>> call, Throwable t) {
-                System.out.println("my on failure2");
+                Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-
 }
