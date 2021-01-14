@@ -48,6 +48,9 @@ public interface ShopApi {
     @FormUrlEncoded
     Call<Void> login(@Field("username") String name, @Field("password") String password);
 
+    @POST("logout")
+    Call<Void> logout();
+
     @POST("register")
     Call<Integer> register(@Body HashMap<String, Object> body);
 }

@@ -25,6 +25,7 @@ public class MainPanel extends AppCompatActivity {
 
     private Button buttonClientPanel;
     private Button buttonStartShopping;
+    private Button buttonLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainPanel extends AppCompatActivity {
 
         buttonClientPanel = findViewById(R.id.btnClientPanel);
         buttonStartShopping = findViewById(R.id.btnStartShopping);
+        buttonLogout = findViewById(R.id.btnLogOut);
 
         buttonClientPanel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +47,13 @@ public class MainPanel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startShopping();
+            }
+        });
+
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
             }
         });
     }
@@ -78,6 +87,37 @@ public class MainPanel extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ShoppingCart> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void logout() {
+        Call<Void> call = MainActivity.shopApi.logout();
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    try {
+                        Gson gson = new Gson();
+                        ApiException apiException = gson.fromJson(response.errorBody().string(), ApiException.class);
+                        Toast.makeText(MainPanel.this, apiException.getMessage(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+
+                MainActivity.okHttpClient.dispatcher().executorService().shutdownNow();
+                MainActivity.okHttpClient.dispatcher().cancelAll();
+                MainActivity.okHttpClient = null;
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
