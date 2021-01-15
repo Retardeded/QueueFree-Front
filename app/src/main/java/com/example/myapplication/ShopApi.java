@@ -37,9 +37,11 @@ public interface ShopApi {
     @POST("shoppingCart/confirmExit")
     Call<Void> confirmExit();
 
-
     @POST("shoppingCart/finalize")
     Call<Receipt> finalizeShop();
+
+    @GET("receipts")
+    Call<List<Receipt>> getReceipts();
 
     @DELETE("shoppingCart")
     Call<ShoppingCart> deleteProduct(@Query("barcode") String barcode);

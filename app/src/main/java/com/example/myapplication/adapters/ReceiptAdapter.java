@@ -12,19 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.model.ReceiptItem;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReceiptAdapter extends
         RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
 
-    private List<ReceiptItem> mItems;
+    private ArrayList<ReceiptItem> mItems;
 
-    public ReceiptAdapter(ArrayList<ReceiptItem> items) {
-
-        mItems = items;
+    public ReceiptAdapter(ArrayList<ReceiptItem> subItemList) {
+        this.mItems = subItemList;
     }
-
 
     @NonNull
     @Override

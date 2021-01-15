@@ -41,10 +41,10 @@ public class ShoppingFinalize extends AppCompatActivity {
 
         billView = findViewById(R.id.et_bill_cost);
 
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.et_receipt_list);
+        RecyclerView rvReceipt = (RecyclerView) findViewById(R.id.et_receipt_list);
         receiptAdapter = new ReceiptAdapter(receiptItems);
-        rvContacts.setAdapter(receiptAdapter);
-        rvContacts.setLayoutManager(new LinearLayoutManager(this));
+        rvReceipt.setAdapter(receiptAdapter);
+        rvReceipt.setLayoutManager(new LinearLayoutManager(this));
 
         if(MainActivity.shopApi != null) {
             shoppingFinalize();
@@ -114,11 +114,8 @@ public class ShoppingFinalize extends AppCompatActivity {
                 List<ReceiptItem> items = receipt.items;
                 int cost = receipt.total;
 
-                System.out.println("TUUU" + items);
-                System.out.println("TUU2" + items.get(0));
                 for(int i = 0; i < items.size(); i++) {
                     receiptItems.add(items.get(i));
-                    //System.out.println("STATY:: " + items.get(i).productPrice + " " + items.get(i).productQuantity + " " + items.get(i).productName);
                     receiptAdapter.notifyItemInserted(receiptItems.size()-1);
                 }
 
