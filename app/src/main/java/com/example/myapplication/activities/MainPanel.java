@@ -45,7 +45,7 @@ public class MainPanel extends AppCompatActivity {
         buttonLogout = findViewById(R.id.btnLogOut);
         imageView = findViewById(R.id.qrImg);
 
-        //showQr();
+        showQr();
 
         buttonClientPanel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +70,9 @@ public class MainPanel extends AppCompatActivity {
     }
 
     public static void showQr() {
+        if(MainActivity.userObj == null)
+            return;
+
         String text = Long.toString(MainActivity.userObj.getId()); // Whatever you need to encode in the QR code
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
