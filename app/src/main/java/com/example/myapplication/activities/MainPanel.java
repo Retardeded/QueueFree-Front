@@ -86,6 +86,7 @@ public class MainPanel extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), ClientPanel.class);
         startActivity(intent);
+        //finish();
     }
 
     public void startShopping() {
@@ -107,6 +108,7 @@ public class MainPanel extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), Shopping.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
@@ -138,6 +140,7 @@ public class MainPanel extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override

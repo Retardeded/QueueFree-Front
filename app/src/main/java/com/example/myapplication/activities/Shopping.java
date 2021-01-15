@@ -106,6 +106,7 @@ public class Shopping extends AppCompatActivity {
     public void finalizeShopping () {
         Intent intent = new Intent(getApplicationContext(), ShoppingFinalize.class);
         startActivity(intent);
+        finish();
     }
 
     public void addProduct() {

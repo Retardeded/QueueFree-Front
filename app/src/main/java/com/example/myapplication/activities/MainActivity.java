@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
     public void doRegister() {
         Intent intent = new Intent(MainActivity.this, Register.class);
         startActivity(intent);
-        finish();
     }
 
     public void logIn() {
@@ -145,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 lanuchOfMainPanel();
                 createSocket();
                 setUser();
+                finish();
             }
 
             @Override

@@ -57,6 +57,7 @@ public class LeavingShop extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), MainPanel.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override

@@ -93,9 +93,9 @@ public class ClientPanel extends AppCompatActivity {
         btnGoMainPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(ClientPanel.this, MainPanel.class);
-                startActivity(i);
-                //finish();
+                //Intent i = new Intent(ClientPanel.this, MainPanel.class);
+                //startActivity(i);
+                finish();
             }
         });
 
