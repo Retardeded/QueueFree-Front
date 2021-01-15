@@ -2,6 +2,7 @@ package com.example.myapplication.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -54,8 +55,8 @@ public class LeavingShop extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(LeavingShop.this, "Pomyślne wyjście", Toast.LENGTH_SHORT).show();
-                leaveButton.setText("Pomyślne wyjście");
+                Intent intent = new Intent(getApplicationContext(), MainPanel.class);
+                startActivity(intent);
             }
 
             @Override
