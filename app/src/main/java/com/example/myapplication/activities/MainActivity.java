@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.ShopApi;
 import com.example.myapplication.User;
+import com.example.myapplication.model.ApiException;
+import com.example.myapplication.model.ShoppingCart;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -141,14 +144,57 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Bad credentials", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                lanuchOfMainPanel();
-                createSocket();
-                setUser();
-                finish();
+                dispatchAfterLogin();
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void dispatchAfterLogin() {
+        Call<ShoppingCart> call = MainActivity.shopApi.getShoppingCart();
+        call.enqueue(new Callback<ShoppingCart>() {
+            @Override
+            public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
+                createSocket();
+                setUser();
+
+                Intent intent = null;
+
+                if (!response.isSuccessful()) {
+                    try {
+                        Gson gson = new Gson();
+                        ApiException apiException = gson.fromJson(response.errorBody().string(), ApiException.class);
+
+                        switch (apiException.getMessage()) {
+                            case "Customer not in shop":
+                                intent = new Intent(MainActivity.this, MainPanel.class);
+                                break;
+                            case "Customer should head towards exit":
+                                intent = new Intent(MainActivity.this, LeavingShop.class);
+                                break;
+                            case "Customer should make payment":
+                                intent = new Intent(MainActivity.this, ShoppingFinalize.class);
+                                break;
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    intent = new Intent(MainActivity.this, Shopping.class);
+                }
+
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<ShoppingCart> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -178,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
 
                 String message = split[1];
-                if(message.length() == 1)
+                if (message.length() == 1)
                     return;
 
                 System.out.println(body);
