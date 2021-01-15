@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.R;
 import com.example.myapplication.ShopApi;
+import com.example.myapplication.User;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public String user = "user";
     public String password = "haslo";
     private static final String KEY_EMPTY = "";
+    public static User userObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 lanuchOfMainPanel();
                 createSocket();
+                setUser();
             }
 
             @Override
@@ -192,6 +195,26 @@ public class MainActivity extends AppCompatActivity {
         };
         MainActivity.okHttpClient.newWebSocket(request, webSocketListenerCoinPrice);
         MainActivity.okHttpClient.dispatcher().executorService();
+    }
+
+    public void setUser() {
+        Call<User> call = MainActivity.shopApi.getUser();
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
+
+                MainActivity.userObj = response.body();
+                MainPanel.showQr();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public boolean validateInputs() {

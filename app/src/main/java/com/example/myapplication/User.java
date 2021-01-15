@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-
+    @SerializedName("id")
+    @Expose
+    private long id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -82,6 +84,10 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public long getId() {
+        return id;
     }
 }
 

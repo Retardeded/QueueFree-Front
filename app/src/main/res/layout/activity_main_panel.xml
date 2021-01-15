@@ -16,29 +16,6 @@
         android:text="@string/main_panel"
         android:textSize="25sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:gravity="center"
-        android:text="@string/code_QR"
-        android:textSize="20sp" />
-
-    <EditText
-        android:id="@+id/textQR"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/et_custom"
-        android:hint="@string/code_QR"
-        android:inputType="textPassword"
-        android:padding="15dp"
-        android:textSize="15sp" />
-
-
-
     <Button
         android:id="@+id/btnStartShopping"
         android:layout_width="match_parent"
@@ -69,5 +46,14 @@
         android:background="@drawable/btn_custom"
         android:text="@string/logout"
         android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/qrImg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="12sp"
+        />
 
 </LinearLayout>

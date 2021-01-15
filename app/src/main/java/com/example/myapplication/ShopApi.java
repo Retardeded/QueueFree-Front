@@ -48,6 +48,9 @@ public interface ShopApi {
     @FormUrlEncoded
     Call<Void> login(@Field("username") String name, @Field("password") String password);
 
+    @GET("user")
+    Call<User> getUser();
+
     @POST("logout")
     Call<Void> logout();
 
