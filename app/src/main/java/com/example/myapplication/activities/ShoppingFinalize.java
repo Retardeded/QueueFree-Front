@@ -90,6 +90,7 @@ public class ShoppingFinalize extends AppCompatActivity {
     public void launchLeavingShop() {
         Intent intent = new Intent(getApplicationContext(), LeavingShop.class);
         startActivity(intent);
+        finish();
     }
 
 

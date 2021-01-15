@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
     public void doRegister() {
         Intent intent = new Intent(MainActivity.this, Register.class);
         startActivity(intent);
-        finish();
     }
 
     public void logIn() {
@@ -125,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://jsonplaceholder.typicode.com/")
                 //.baseUrl("http://localhost:8080/")
-                //.baseUrl("http://10.0.0.5:8080/")
-                .baseUrl("http://192.168.1.3:8080/")
+                .baseUrl("http://10.0.0.5:8080/")
+                //.baseUrl("http://192.168.1.3:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MainActivity.okHttpClient)
                 .build();
@@ -145,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 lanuchOfMainPanel();
                 createSocket();
                 setUser();
+                finish();
             }
 
             @Override
@@ -160,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createSocket() {
-        //Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
-        Request request = new Request.Builder().url("ws://192.168.1.3:8080/websocket").build();
+        Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
+        //Request request = new Request.Builder().url("ws://192.168.1.3:8080/websocket").build();
 
         WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
             @Override
