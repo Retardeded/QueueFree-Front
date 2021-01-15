@@ -13,11 +13,12 @@
         android:layout_height="wrap_content" >
 
         <EditText
-            android:layout_width="220dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Enter Barcode"
+            android:text="Wpisz kod kreskowy"
             android:id="@+id/barcodetextview"
             android:textSize="25sp"
+            android:layout_weight="3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -25,11 +26,12 @@
 
         <Button
             android:id="@+id/btnAdd"
-            android:layout_width="150dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:text="Add"
+            android:text="Dodaj"
             android:textColor="@android:color/white" />
 
     </LinearLayout>
@@ -44,15 +46,15 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/btn_custom"
-        android:text="ScanBarcode" />
+        android:text="Skanuj kod" />
 
     <Button
         android:id="@+id/btnGen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="150dp"
-        android:layout_marginRight="150dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
         android:layout_marginBottom="20dp"
         android:text="Generate Barcode"
         android:textColor="@android:color/white" />
@@ -68,14 +70,17 @@
             android:layout_height="wrap_content"
             android:text="@string/shopping_cart"
             android:textAlignment="center"
-            android:textSize="30sp"
-            android:layout_width="220dp" />
+            android:textSize="20sp"
+            android:layout_width="fill_parent"
+            android:layout_weight="4" />
 
 
         <Button
+            android:textSize="15sp"
             android:layout_marginBottom="20dp"
             android:id="@+id/btnEndShopping"
-            android:layout_width="150dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="4"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"

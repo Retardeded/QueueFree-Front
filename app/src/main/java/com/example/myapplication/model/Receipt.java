@@ -11,27 +11,17 @@ public class Receipt {
     public User user;
     public ArrayList<ReceiptItem> items;
     public int total;
-    private String itemTitle;
 
-    public Receipt(String itemTitle, ArrayList<ReceiptItem> subItemList) {
-        this.itemTitle = itemTitle;
+    public Receipt(ArrayList<ReceiptItem> subItemList) {
         this.items = subItemList;
     }
 
     public String getItemTitle() {
-        return itemTitle;
-    }
-
-    public void setItemTitle(String itemTitle) {
-        this.itemTitle = itemTitle;
+        return "Koszt paragonu " + String.valueOf((float)total/100) + "zł";
     }
 
     public ArrayList<ReceiptItem> getSubItemList() {
         return items;
-    }
-
-    public void setSubItemList(ArrayList<ReceiptItem> subItemList) {
-        this.items = subItemList;
     }
 
 }

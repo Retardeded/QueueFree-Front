@@ -8,41 +8,55 @@
     tools:context=".activities.ShoppingFinalize">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
         android:text="Panel Klienta"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="30dp"/>
+        android:textSize="25sp" />
 
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="Nazwa użytkownika: " />
+
+    <TextView
+        android:id="@+id/tv_user_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:text="Twoje id to: " />
 
     <Button
         android:id="@+id/btnGoToMainPanel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_custom"
         android:text="Powrót do panelu głównego"
-        />
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/btnShowLatestReceipts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:text="Pokaż ostatnie rachunki"
-        />
-
-
-
-    <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="Rachunki"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/et_custom"
-        android:textSize="15sp" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp"
+        android:text="Pokaż ostatnie rachunki" />
 
 
     <LinearLayout

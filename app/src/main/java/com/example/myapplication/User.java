@@ -9,7 +9,7 @@ public class User {
     private long id;
     @SerializedName("name")
     @Expose
-    private String name;
+    private String username;
     @SerializedName("email")
     @Expose
     private String email;
@@ -30,12 +30,12 @@ public class User {
     private String address;
     @SerializedName("username")
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.R;
-import com.example.myapplication.adapters.ReceiptAdapter;
+import com.example.myapplication.adapters.ReceiptItemAdapter;
 import com.example.myapplication.model.ApiException;
 import com.example.myapplication.model.Receipt;
 import com.example.myapplication.model.ReceiptItem;
@@ -30,7 +30,7 @@ public class ShoppingFinalize extends AppCompatActivity {
 
     Receipt receipt;
     public ArrayList<ReceiptItem> receiptItems = new ArrayList<>();
-    public ReceiptAdapter receiptAdapter;
+    public ReceiptItemAdapter receiptItemAdapter;
     TextView billView;
     Button buttonPay;
 
@@ -42,8 +42,8 @@ public class ShoppingFinalize extends AppCompatActivity {
         billView = findViewById(R.id.et_bill_cost);
 
         RecyclerView rvReceipt = (RecyclerView) findViewById(R.id.et_receipt_list);
-        receiptAdapter = new ReceiptAdapter(receiptItems);
-        rvReceipt.setAdapter(receiptAdapter);
+        receiptItemAdapter = new ReceiptItemAdapter(receiptItems);
+        rvReceipt.setAdapter(receiptItemAdapter);
         rvReceipt.setLayoutManager(new LinearLayoutManager(this));
 
         if(MainActivity.shopApi != null) {
@@ -116,10 +116,10 @@ public class ShoppingFinalize extends AppCompatActivity {
 
                 for(int i = 0; i < items.size(); i++) {
                     receiptItems.add(items.get(i));
-                    receiptAdapter.notifyItemInserted(receiptItems.size()-1);
+                    receiptItemAdapter.notifyItemInserted(receiptItems.size()-1);
                 }
-
-                billView.setText("Do zapłaty: " + cost + "zł");
+                String text = "Do zapłaty: " + (float)cost/100 + "zł";
+                billView.setText(text);
             }
 
             @Override

@@ -63,7 +63,7 @@ public class ItemsAdapter extends
         TextView quantityView = holder.quantityTextView;
         quantityView.setText(text);
         TextView priceView = holder.priceTextView;
-        text = (item.product.price) + " zl";
+        text = ((float)item.product.price/100) + " zl";
         priceView.setText(text);
         ImageView imgView = holder.img;
 
