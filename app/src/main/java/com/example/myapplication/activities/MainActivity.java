@@ -253,7 +253,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 MainActivity.userObj = response.body();
-                MainPanel.showQr();
+                if(MainActivity.userObj != null)
+                    MainPanel.showQr(Long.toString(MainActivity.userObj.getId()));
             }
 
             @Override

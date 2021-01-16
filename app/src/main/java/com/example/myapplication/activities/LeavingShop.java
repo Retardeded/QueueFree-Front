@@ -54,10 +54,7 @@ public class LeavingShop extends AppCompatActivity {
                     }
                     return;
                 }
-
-                Intent intent = new Intent(getApplicationContext(), MainPanel.class);
-                startActivity(intent);
-                finish();
+                launchMainPanel();
             }
 
             @Override
@@ -65,5 +62,11 @@ public class LeavingShop extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void launchMainPanel() {
+        Intent intent = new Intent(getApplicationContext(), MainPanel.class);
+        startActivity(intent);
+        finish();
     }
 }

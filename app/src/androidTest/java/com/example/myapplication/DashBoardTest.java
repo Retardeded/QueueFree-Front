@@ -24,11 +24,8 @@ public class DashBoardTest {
     @Rule
     public ActivityTestRule<DashBoard> mActivityRuleTest = new ActivityTestRule<>(DashBoard.class);
 
-    //@Rule
-    //public ActivityTestRule<Register> mRegisterRuleTest = new ActivityTestRule<>(Register.class);
 
     DashBoard mDashBoard = null;
-    //Register registerActivty = null;
 
     Instrumentation.ActivityMonitor mainActivityMonitor = getInstrumentation().addMonitor(MainActivity.class.getName(), null, false);
 
@@ -36,7 +33,6 @@ public class DashBoardTest {
     public void setUp() throws Exception {
 
         mDashBoard = mActivityRuleTest.getActivity();
-        //registerActivty = mRegisterRuleTest.getActivity();
     }
 
     @Test

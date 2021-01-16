@@ -57,29 +57,6 @@ public class MainActivityTest {
         assertNotNull(mainPanel);
     }
 
-    /*
-    @Test
-    public void testLogIn(){
-
-        assertNotNull(mActivity.findViewById(R.id.btnLogin));
-
-        TextView loginText = mActivity.findViewById(R.id.etLoginUsername);
-        TextView passwordText = mActivity.findViewById(R.id.etLoginPassword);
-
-        mActivity.createClient();
-
-        loginText.setText("user");
-        passwordText.setText("haslo");
-
-        onView(withId(R.id.btnLogin)).perform(click());
-
-        Activity mainPanel = getInstrumentation().waitForMonitorWithTimeout(monitor,5000);
-
-        assertNotNull(mainPanel);
-
-    }
-
-     */
 
     @Test
     public void emptyNameTest() {
@@ -130,15 +107,4 @@ public class MainActivityTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void onCreate() {
-    }
-
-    @Test
-    public void doRegister() {
-    }
-
-    @Test
-    public void logIn() {
-    }
 }

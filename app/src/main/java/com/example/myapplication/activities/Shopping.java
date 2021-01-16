@@ -59,7 +59,9 @@ public class Shopping extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getProducts();
+        if(MainActivity.shopApi != null)
+            getProducts();
+
         setContentView(R.layout.activity_shopping);
 
         buttonAdd = findViewById(R.id.btnAdd);

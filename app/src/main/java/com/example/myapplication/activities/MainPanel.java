@@ -45,7 +45,8 @@ public class MainPanel extends AppCompatActivity {
         buttonLogout = findViewById(R.id.btnLogOut);
         imageView = findViewById(R.id.qrImg);
 
-        showQr();
+        if(MainActivity.userObj != null)
+            showQr(Long.toString(MainActivity.userObj.getId()));
 
         buttonClientPanel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,11 +70,8 @@ public class MainPanel extends AppCompatActivity {
         });
     }
 
-    public static void showQr() {
-        if(MainActivity.userObj == null)
-            return;
+    public static void showQr(String text) {
 
-        String text = Long.toString(MainActivity.userObj.getId()); // Whatever you need to encode in the QR code
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 300, 300);
@@ -109,9 +107,7 @@ public class MainPanel extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent = new Intent(getApplicationContext(), Shopping.class);
-                startActivity(intent);
-                finish();
+                lanuchOfShopping();
             }
 
             @Override
@@ -119,6 +115,12 @@ public class MainPanel extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void lanuchOfShopping() {
+        Intent intent = new Intent(getApplicationContext(), Shopping.class);
+        startActivity(intent);
+        finish();
     }
 
     public void logout() {
@@ -141,9 +143,7 @@ public class MainPanel extends AppCompatActivity {
                 MainActivity.okHttpClient.dispatcher().cancelAll();
                 MainActivity.okHttpClient = null;
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                lanuchOfMainActivty();
             }
 
             @Override
@@ -151,5 +151,11 @@ public class MainPanel extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void lanuchOfMainActivty() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

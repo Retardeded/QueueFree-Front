@@ -52,10 +52,11 @@ public class ClientPanel extends AppCompatActivity {
         rvItem.setLayoutManager(layoutManager);
 
         tvUser = findViewById(R.id.tv_user_name);
-        String text = "Nazwa użytkownika: " + MainActivity.userObj.getUsername();
-        tvUser.setText(text);
         tvId = findViewById(R.id.tv_user_id);
-        tvId.setText("Twoje id to: " + MainActivity.userObj.getId());
+        if(MainActivity.userObj != null)
+        {
+            setUserData(MainActivity.userObj.getUsername(), MainActivity.userObj.getId());
+        }
         btnGoMainPanel = findViewById(R.id.btnGoToMainPanel);
 
         btnGoMainPanel.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +76,12 @@ public class ClientPanel extends AppCompatActivity {
                getReceipts();
             }
         });
+    }
+
+    public void setUserData(String userName, long id) {
+        String text = "Nazwa użytkownika: " + userName;
+        tvId.setText("Twoje id to: " + id);
+        tvUser.setText(text);
     }
 
 

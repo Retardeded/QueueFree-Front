@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.widget.TextView;
 
 import androidx.test.rule.ActivityTestRule;
 
@@ -11,6 +12,7 @@ import com.example.myapplication.activities.MainPanel;
 import com.example.myapplication.activities.Shopping;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -42,7 +44,18 @@ public class ClientPanelTest {
         assertNotNull(mainPanel);
         mainPanel.finish();
     }
-    
+
+    /*
+    @Test
+    public void testSetUserData(){
+        assertNotNull(mClientPanel.findViewById(R.id.tv_user_name));
+        assertNotNull(mClientPanel.findViewById(R.id.tv_user_id));
+        TextView tvUser = mClientPanel.findViewById(R.id.tv_user_name);
+        TextView tvId = mClientPanel.findViewById(R.id.tv_user_id);
+        mClientPanel.setUserData("this", 1);
+        Assert.assertTrue(tvUser.getText() == "this");
+    }
+     */
 
 
     @After

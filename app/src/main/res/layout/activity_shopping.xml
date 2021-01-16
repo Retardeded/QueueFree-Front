@@ -46,7 +46,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/btn_custom"
-        android:text="Skanuj kod" />
+        android:text="Zeskanuj kod" />
 
     <Button
         android:id="@+id/btnGen"

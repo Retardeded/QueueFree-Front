@@ -9,41 +9,43 @@
     >
 
     <TextView
+        android:layout_margin="5dp"
         android:id="@+id/itemName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="left"
+        android:textSize="12sp"
         />
 
     <TextView
+        android:layout_margin="5dp"
         android:id="@+id/itemPrice"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="left"
         android:textSize="12sp"
         />
 
     <ImageView
+        android:layout_margin="5dp"
         android:id="@+id/itemImg"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
         android:textSize="12sp"
         />
 
     <TextView
+        android:layout_margin="5dp"
         android:id="@+id/itemQuantity"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
         android:textSize="12sp"
         />
 
     <Button
+        android:layout_margin="5dp"
     android:id="@+id/btnRemoveProduct"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
