@@ -1,8 +1,5 @@
 package com.example.myapplication.model;
 
-import com.example.myapplication.User;
-import com.example.myapplication.model.CartItem;
-
 import java.util.List;
 
 public class ShoppingCart {
