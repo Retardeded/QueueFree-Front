@@ -7,7 +7,7 @@ public class User {
     @SerializedName("id")
     @Expose
     private long id;
-    @SerializedName("name")
+    @SerializedName("username")
     @Expose
     private String username;
     @SerializedName("email")

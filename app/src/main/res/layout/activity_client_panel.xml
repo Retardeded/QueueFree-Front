@@ -19,8 +19,8 @@
         android:id="@+id/tv_user_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="Nazwa użytkownika: " />
@@ -29,8 +29,8 @@
         android:id="@+id/tv_user_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_marginTop="30dp"
         android:textSize="20sp"
         android:text="Twoje id to: " />
