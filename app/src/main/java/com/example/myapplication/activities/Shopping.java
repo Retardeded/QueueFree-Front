@@ -89,6 +89,8 @@ public class Shopping extends AppCompatActivity {
         });
 
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.et_product_list);
+        shoppingCartProducts.clear();
+        productListHash.clear();
         adapter = new ItemsAdapter(shoppingCartProducts);
         rvContacts.setAdapter(adapter);
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
