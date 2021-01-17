@@ -40,21 +40,15 @@ public class Register extends AppCompatActivity {
     private ProgressDialog pDialog;
     public String msg;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
         setUpEditTexts();
-
-        Button register = findViewById(R.id.btnRegister);
-
-        register.setOnClickListener(new View.OnClickListener() {
+        Button buttonRegister = findViewById(R.id.btnRegister);
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //Retrieve the data entered in the edit texts
                 user = etUsername.getText().toString();
                 password = etPassword.getText().toString();
                 confirmPassword = etConfirmPassword.getText().toString();
@@ -102,17 +96,15 @@ public class Register extends AppCompatActivity {
     }
 
     private void registerUser() {
-
         displayLoader();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.3:8080/")
+                .baseUrl("http://" + MainActivity.ipString)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MainActivity.okHttpClient)
                 .build();
 
         MainActivity.shopApi = retrofit.create(ShopApi.class);
-
         HashMap<String, Object> hashMap  = new HashMap<>();
         hashMap.put("username", user);
         hashMap.put("password", password);
@@ -123,7 +115,6 @@ public class Register extends AppCompatActivity {
             public void onResponse(Call<Integer> call, Response<Integer> response) {
 
                 pDialog.dismiss();
-
                 if (!response.isSuccessful()) {
                     try {
                         Gson gson = new Gson();
@@ -134,9 +125,7 @@ public class Register extends AppCompatActivity {
                     }
                     return;
                 }
-                System.out.println("register succes");
                 loadDashboard();
-
             }
 
             @Override
@@ -149,8 +138,7 @@ public class Register extends AppCompatActivity {
     }
 
     /**
-     * Validates inputs and shows error if any
-     * @return
+     * Validates inputs
      */
     public boolean validateInputs() {
         if (KEY_EMPTY.equals(fullName)) {
@@ -171,7 +159,6 @@ public class Register extends AppCompatActivity {
             msg = "Pola hasło i potwierdź hasło nie są takie same";
             return false;
         }
-
         return true;
     }
 }

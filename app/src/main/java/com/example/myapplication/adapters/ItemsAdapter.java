@@ -38,7 +38,6 @@ public class ItemsAdapter extends
     public ItemsAdapter(List<CartItem> items) {
         mItems = items;
     }
-    
 
     @NonNull
     @Override
@@ -52,6 +51,10 @@ public class ItemsAdapter extends
         return viewHolder;
     }
 
+    /**
+     * Set up what is to be shown in a single row
+     */
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -63,22 +66,16 @@ public class ItemsAdapter extends
         TextView quantityView = holder.quantityTextView;
         quantityView.setText(text);
         TextView priceView = holder.priceTextView;
-        text = ((float)item.product.price/100) + " zl";
+        text = ((float)(item.product.price)/100 * item.quantity) + " zl";
         priceView.setText(text);
         ImageView imgView = holder.img;
 
         new DownloadImageTask((ImageView) imgView)
                 .execute(item.product.imageUrl);
 
-        //new DownloadImageTask((ImageView) imgView)
-        //        .execute("https://static.openfoodfacts.org/images/products/590/008/423/4979/front_pl.4.200.jpg");
-
-        //imgView.setImageURI(Uri.parse(item.product.imageUrl));
         Button removeButton = holder.removeButton;
         removeButton.setText("Usuń");
     }
-
-
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -105,28 +102,15 @@ public class ItemsAdapter extends
         }
     }
 
-
-
     @Override
     public int getItemCount() {
         return mItems.size();
-    }
-
-    public void removeAt(int position) {
-
-        mItems.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, mItems.size());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            //Log.d("View: ", v.toString());
-            //Toast.makeText(v.getContext(), mTextViewTitle.getText() + " position = " + getPosition(), Toast.LENGTH_SHORT).show();
-            //removeAt(getAdapterPosition());
-            //deleteProduct();
 
         }
         public TextView nameTextView;
@@ -134,7 +118,6 @@ public class ItemsAdapter extends
         public TextView priceTextView;
         public ImageView img;
         public Button removeButton;
-
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -144,7 +127,6 @@ public class ItemsAdapter extends
             priceTextView = (TextView) itemView.findViewById(R.id.itemPrice);
             img = itemView.findViewById(R.id.itemImg);
             removeButton = (Button) itemView.findViewById(R.id.btnRemoveProduct);
-
             removeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -152,10 +134,7 @@ public class ItemsAdapter extends
                 }
             });
 
-
         }
-
-
 
         public void deleteProduct() {
 
@@ -168,26 +147,29 @@ public class ItemsAdapter extends
                 public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
 
                     if (!response.isSuccessful()) {
-                        System.out.println("my on failure");
                         return;
                     }
 
+                    /**
+                     * Check if there is more than one this type of product in shoppingCart, if so only decerasing it's quantity is needed
+                     */
                     if(Shopping.shoppingCartProducts.get(position).quantity > 1)
                     {
                         CartItem item = Shopping.shoppingCartProducts.get(position);
-
                         item.quantity = item.quantity-1;
-                        Shopping.adapter.notifyItemChanged(position);
-
+                        Shopping.itemsAdapter.notifyItemChanged(position);
                         Shopping.productListHash.remove(item.product.barcode);
                         Shopping.productListHash.put(item.product.barcode, new Shopping.CartProductInfo(position, item.quantity));
                     }
+                    /**
+                     * Otherwise we need to remove whole product
+                     */
                     else
                     {
                         Shopping.productListHash.remove(barcode);
                         Shopping.shoppingCartProducts.remove(position);
-                        Shopping.adapter.notifyItemRemoved(position);
-                        Shopping.adapter.notifyItemRangeChanged(position, mItems.size());
+                        Shopping.itemsAdapter.notifyItemRemoved(position);
+                        Shopping.itemsAdapter.notifyItemRangeChanged(position, mItems.size());
 
                     }
 
@@ -195,7 +177,6 @@ public class ItemsAdapter extends
 
                 @Override
                 public void onFailure(Call<ShoppingCart> call, Throwable t) {
-                    System.out.println("my on failure2");
                 }
             });
 

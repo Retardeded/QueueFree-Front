@@ -46,15 +46,13 @@ public class Shopping extends AppCompatActivity {
     public static ArrayList<Product> products = new ArrayList<>();
     public static ArrayList<CartItem> shoppingCartProducts = new ArrayList<>();
     public static HashMap<String, CartProductInfo> productListHash = new HashMap<>();
-
     public static ShoppingCart shoppingCart;
-    public static ItemsAdapter adapter;
+    public static ItemsAdapter itemsAdapter;
     private Button buttonAdd;
-    private Button buttonGen;
+    private Button buttonGenBarcode;
     private Button buttonEndShopping;
-
-    public static TextView resulttextview;
-    Button scanbutton;
+    private Button buttonScanBarcode;
+    public static TextView etBarcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +70,11 @@ public class Shopping extends AppCompatActivity {
             }
         });
 
-        buttonGen = findViewById(R.id.btnGen);
-        buttonGen.setOnClickListener(new View.OnClickListener() {
+        buttonGenBarcode = findViewById(R.id.btnGen);
+        buttonGenBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SetRandomProduct();
+                SetRandomBarcode();
             }
         });
 
@@ -88,23 +86,22 @@ public class Shopping extends AppCompatActivity {
             }
         });
 
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.et_product_list);
-        shoppingCartProducts.clear();
-        productListHash.clear();
-        adapter = new ItemsAdapter(shoppingCartProducts);
-        rvContacts.setAdapter(adapter);
-        rvContacts.setLayoutManager(new LinearLayoutManager(this));
-
-        resulttextview = findViewById(R.id.barcodetextview);
-        scanbutton = findViewById(R.id.buttonscan);
-
-        scanbutton.setOnClickListener(new View.OnClickListener() {
+        buttonScanBarcode = findViewById(R.id.buttonscan);
+        buttonScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), ScanCodeActivity.class));
             }
         });
 
+        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.et_product_list);
+        shoppingCartProducts.clear();
+        productListHash.clear();
+        itemsAdapter = new ItemsAdapter(shoppingCartProducts);
+        rvContacts.setAdapter(itemsAdapter);
+        rvContacts.setLayoutManager(new LinearLayoutManager(this));
+
+        etBarcode = findViewById(R.id.barcodetextview);
     }
 
     public void finalizeShopping () {
@@ -114,7 +111,7 @@ public class Shopping extends AppCompatActivity {
     }
 
     public void addProduct() {
-        String barcode = resulttextview.getText().toString();
+        String barcode = etBarcode.getText().toString();
         Call<ShoppingCart> call = MainActivity.shopApi.addProduct(barcode);
         call.enqueue(new Callback<ShoppingCart>() {
             @Override
@@ -130,30 +127,31 @@ public class Shopping extends AppCompatActivity {
                     return;
                 }
                 Shopping.shoppingCart = response.body();
-
                 List<CartItem> items = shoppingCart.items;
 
+                /**
+                 * Check if this type of product is already in shoppingCart, if so only incerasing it's quantity is needed
+                 */
                 if(Shopping.productListHash.containsKey(barcode))
                 {
                     int index = Shopping.productListHash.get(barcode).index;
-
                     Shopping.shoppingCartProducts.get(index).quantity += 1;
-                    Shopping.adapter.notifyItemChanged(index);
-
+                    Shopping.itemsAdapter.notifyItemChanged(index);
                     Shopping.productListHash.remove(barcode);
                     Shopping.productListHash.put(barcode, new CartProductInfo(index, Shopping.shoppingCartProducts.get(index).quantity));
                 }
-
-                for(int i = 0; i < items.size(); i++) {
-
-                    CartItem item = items.get(i);
-
-                    if(!Shopping.productListHash.containsKey(item.product.barcode))
-                    {
-                        Shopping.shoppingCartProducts.add(item);
-                        Shopping.adapter.notifyItemInserted(shoppingCartProducts.size()-1);
-
-                        Shopping.productListHash.put(item.product.barcode, new CartProductInfo(shoppingCartProducts.size()-1, item.quantity));
+                /**
+                 * Otherwise we need to search through all cartItems, cause correct order is not maintained by server
+                 */
+                else
+                {
+                    for(int i = 0; i < items.size(); i++) {
+                        CartItem item = items.get(i);
+                        if(!Shopping.productListHash.containsKey(item.product.barcode)) {
+                            Shopping.shoppingCartProducts.add(item);
+                            Shopping.itemsAdapter.notifyItemInserted(shoppingCartProducts.size()-1);
+                            Shopping.productListHash.put(item.product.barcode, new CartProductInfo(shoppingCartProducts.size()-1, item.quantity));
+                        }
                     }
                 }
             }
@@ -165,14 +163,21 @@ public class Shopping extends AppCompatActivity {
         });
     }
 
-    private void SetRandomProduct() {
+    /**
+     * Generate random barcode from lits of all products
+     */
+    private void SetRandomBarcode() {
         int random = new Random().nextInt(10);
         random += 10;
         if(Shopping.products.size() <= random)
             return;
         String barcode = Shopping.products.get(random).barcode;
-        resulttextview.setText(barcode);
+        etBarcode.setText(barcode);
     }
+
+    /**
+     * Get all products from server
+     */
 
     public void getProducts() {
         Call<List<Product>> call = MainActivity.shopApi.getProducts();
@@ -185,7 +190,6 @@ public class Shopping extends AppCompatActivity {
                     return;
                 }
                 List<Product> productsList = response.body();
-
                 for(Product product : productsList) {
                     products.add(product);
                 }
@@ -196,6 +200,5 @@ public class Shopping extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Error. Check your Internet connection", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

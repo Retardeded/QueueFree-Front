@@ -38,9 +38,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     public static ShopApi shopApi;
     public static OkHttpClient okHttpClient;
-    private EditText loginText;
-    private EditText passwordText;
-
+    private EditText etLogin;
+    private EditText etPassword;
     private Button buttonLogIn;
     private Button buttonRegister;
     public String user = "user";
@@ -48,26 +47,25 @@ public class MainActivity extends AppCompatActivity {
     private static final String KEY_EMPTY = "";
     public static User userObj;
 
+    // tutaj ustaw swoje lokalne ip
+    public static String ipString = "192.168.1.3:8080/";
+    //.baseUrl("http://10.0.0.5:8080/")
+    //.baseUrl("http://192.168.1.3:8080/")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        loginText = findViewById(R.id.etLoginUsername);
-        passwordText = findViewById(R.id.etLoginPassword);
-
+        etLogin = findViewById(R.id.etLoginUsername);
+        etPassword = findViewById(R.id.etLoginPassword);
         autoFillCredentials(user, password);
         setUpButtons();
-
         createClient();
-
     }
 
     public void createClient() {
         CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         MainActivity.okHttpClient = new OkHttpClient.Builder()
@@ -92,9 +90,8 @@ public class MainActivity extends AppCompatActivity {
         buttonLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                user = loginText.getText().toString();
-                password = passwordText.getText().toString();
+                user = etLogin.getText().toString();
+                password = etPassword.getText().toString();
 
                 if (validateInputs()) {
                     logIn();
@@ -113,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void autoFillCredentials(String user, String password) {
-        loginText.setText(user);
-        passwordText.setText(password);
+        etLogin.setText(user);
+        etPassword.setText(password);
     }
 
     public void doRegister() {
@@ -123,19 +120,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logIn() {
-
         Retrofit retrofit = new Retrofit.Builder()
-                //.baseUrl("https://jsonplaceholder.typicode.com/")
-                //.baseUrl("http://localhost:8080/")
-                //.baseUrl("http://10.0.0.5:8080/")
-                .baseUrl("http://192.168.1.3:8080/")
+                .baseUrl("http://" + ipString)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MainActivity.okHttpClient)
                 .build();
 
-
         MainActivity.shopApi = retrofit.create(ShopApi.class);
-
         Call<Void> call = MainActivity.shopApi.login(user, password);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -161,9 +152,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
                 createSocket();
                 setUser();
-
                 Intent intent = null;
-
                 if (!response.isSuccessful()) {
                     try {
                         Gson gson = new Gson();
@@ -188,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     intent = new Intent(MainActivity.this, Shopping.class);
                 }
-
                 startActivity(intent);
                 finish();
             }
@@ -206,9 +194,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createSocket() {
-        //Request request = new Request.Builder().url("ws://10.0.0.5:8080/websocket").build();
-        Request request = new Request.Builder().url("ws://192.168.1.3:8080/websocket").build();
-
+        Request request = new Request.Builder().url("ws://" + ipString + "websocket").build();
         WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
@@ -226,9 +212,6 @@ public class MainActivity extends AppCompatActivity {
                 String message = split[1];
                 if (message.length() == 1)
                     return;
-
-                System.out.println(body);
-                System.out.println(message.length());
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -264,6 +247,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Validates inputs
+     */
     public boolean validateInputs() {
 
         if (KEY_EMPTY.equals(user)) {

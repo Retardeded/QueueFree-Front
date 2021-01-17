@@ -31,7 +31,7 @@ public class ShoppingFinalize extends AppCompatActivity {
     Receipt receipt;
     public ArrayList<ReceiptItem> receiptItems = new ArrayList<>();
     public ReceiptItemAdapter receiptItemAdapter;
-    TextView billView;
+    TextView tvReceipt;
     Button buttonPay;
 
     @Override
@@ -39,7 +39,7 @@ public class ShoppingFinalize extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping_finalize);
 
-        billView = findViewById(R.id.et_bill_cost);
+        tvReceipt = findViewById(R.id.et_bill_cost);
 
         RecyclerView rvReceipt = (RecyclerView) findViewById(R.id.et_receipt_list);
         receiptItemAdapter = new ReceiptItemAdapter(receiptItems);
@@ -63,7 +63,6 @@ public class ShoppingFinalize extends AppCompatActivity {
 
         Call<Void> call = MainActivity.shopApi.payBill();
         call.enqueue(new Callback<Void>() {
-
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {
@@ -76,7 +75,6 @@ public class ShoppingFinalize extends AppCompatActivity {
                     }
                     return;
                 }
-
                 launchLeavingShop();
             }
 
@@ -93,12 +91,10 @@ public class ShoppingFinalize extends AppCompatActivity {
         finish();
     }
 
-
     public void shoppingFinalize() {
 
         Call<Receipt> call = MainActivity.shopApi.finalizeShop();
         call.enqueue(new Callback<Receipt>() {
-
             @Override
             public void onResponse(Call<Receipt> call, Response<Receipt> response) {
                 if (!response.isSuccessful()) {
@@ -120,7 +116,7 @@ public class ShoppingFinalize extends AppCompatActivity {
                     receiptItemAdapter.notifyItemInserted(receiptItems.size()-1);
                 }
                 String text = "Do zapłaty: " + (float)cost/100 + "zł";
-                billView.setText(text);
+                tvReceipt.setText(text);
             }
 
             @Override

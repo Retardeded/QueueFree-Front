@@ -37,6 +37,11 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ItemView
         return viewHolder;
     }
 
+    /**
+     * Set up what is to be shown as single adapter item
+     * This is adapter's adapter (Adapter of ReceiptItemAdapter) so setup is different than usual
+     */
+
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {
         Receipt item = itemList.get(i);

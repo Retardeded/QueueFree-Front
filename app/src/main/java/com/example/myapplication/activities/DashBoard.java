@@ -14,7 +14,6 @@ import com.example.myapplication.R;
 
 public class DashBoard extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +23,8 @@ public class DashBoard extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             fillLoginData(bundle);
         }
-
-        Button btnGoLogin= findViewById(R.id.btnGoLogIn);
-
-        btnGoLogin.setOnClickListener(new View.OnClickListener() {
+        Button buttonGoLogin= findViewById(R.id.btnGoLogIn);
+        buttonGoLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DashBoard.this, MainActivity.class);
@@ -37,15 +34,15 @@ public class DashBoard extends AppCompatActivity {
         });
     }
 
+    /**
+     * Show your data required for login
+     */
     private void fillLoginData(Bundle bundle) {
         if(bundle.getString("userInfo")!= null)
         {
-
             String[] userInfo = bundle.getString("userInfo").split(" ");
-
             TextView userTxt = findViewById(R.id.etDashUsername);
             userTxt.setText(userInfo[0]);
-
             TextView passwordTxt = findViewById(R.id.etDashPassword);
             passwordTxt .setText(userInfo[1]);
         }

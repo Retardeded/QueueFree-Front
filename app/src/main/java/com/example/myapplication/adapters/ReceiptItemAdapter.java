@@ -28,24 +28,25 @@ public class ReceiptItemAdapter extends
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View productView = inflater.inflate(R.layout.product, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(productView);
         return viewHolder;
     }
 
+    /**
+     * Set up what is to be shown in a single row
+     */
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        Integer productPrize = mItems.get(position).price;
+        int productPrize = mItems.get(position).price;
         String productName = mItems.get(position).productName;
-        Integer productQuantity = mItems.get(position).quantity;
+        int productQuantity = mItems.get(position).quantity;
 
         TextView nameView = holder.nameTextView;
         nameView.setText(productName);
         TextView prizeView = holder.prizeTextView;
-        String text = (float)(productPrize)/100 + "zł";
+        String text = (float)(productPrize) / 100 * productQuantity + "zł";
         prizeView.setText(text);
         TextView quantityView = holder.quantityTextView;
         text = "ilość : " + (productQuantity);
@@ -57,7 +58,6 @@ public class ReceiptItemAdapter extends
         return mItems.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameTextView;
@@ -67,12 +67,9 @@ public class ReceiptItemAdapter extends
         public ViewHolder(View productView) {
 
             super(productView);
-
             nameTextView = (TextView) itemView.findViewById(R.id.productName);
             quantityTextView = (TextView) itemView.findViewById(R.id.productQuantity);
             prizeTextView = (TextView) itemView.findViewById(R.id.productCost);
-
-
         }
     }
 }

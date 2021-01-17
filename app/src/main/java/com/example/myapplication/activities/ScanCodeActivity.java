@@ -24,9 +24,7 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
 
     @Override
     public void handleResult(Result result) {
-        Shopping.resulttextview.setText(result.getText());
-        //Shopping.addProduct();
-        //MainActivity.resulttextview.setText(result.getText());
+        Shopping.etBarcode.setText(result.getText());
         onBackPressed();
     }
 
@@ -35,13 +33,6 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
         super.onPause();
         scannerView.stopCamera();
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        scannerView.setResultHandler(this);
-//        scannerView.startCamera();
-//    }
 
     @Override
     protected void onPostResume() {

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,10 +12,8 @@ import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.ReceiptAdapter;
-import com.example.myapplication.adapters.ReceiptItemAdapter;
 import com.example.myapplication.model.ApiException;
 import com.example.myapplication.model.Receipt;
-import com.example.myapplication.model.ReceiptItem;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -29,48 +26,41 @@ import retrofit2.Response;
 
 public class ClientPanel extends AppCompatActivity {
 
-    Button btnGoMainPanel;
-    Button btnShowLatestReceipts;
+    Button buttonGoMainPanel;
+    Button buttonShowLatestReceipts;
     TextView tvId;
     TextView tvUser;
-
     ArrayList<Receipt> receipts = new ArrayList<>();
     RecyclerView rvItem;
     LinearLayoutManager layoutManager;
     ReceiptAdapter receiptAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_panel);
-
         rvItem = findViewById(R.id.rv_item);
         layoutManager = new LinearLayoutManager(this);
         receiptAdapter = new ReceiptAdapter(receipts);
         rvItem.setAdapter(receiptAdapter);
         rvItem.setLayoutManager(layoutManager);
-
         tvUser = findViewById(R.id.tv_user_name);
         tvId = findViewById(R.id.tv_user_id);
         if(MainActivity.userObj != null)
         {
             setUserData(MainActivity.userObj.getUsername(), MainActivity.userObj.getId());
         }
-        btnGoMainPanel = findViewById(R.id.btnGoToMainPanel);
+        buttonGoMainPanel = findViewById(R.id.btnGoToMainPanel);
 
-        btnGoMainPanel.setOnClickListener(new View.OnClickListener() {
+        buttonGoMainPanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent i = new Intent(ClientPanel.this, MainPanel.class);
-                //startActivity(i);
                 finish();
             }
         });
 
-        btnShowLatestReceipts = findViewById(R.id.btnShowLatestReceipts);
-
-        btnShowLatestReceipts.setOnClickListener(new View.OnClickListener() {
+        buttonShowLatestReceipts = findViewById(R.id.btnShowLatestReceipts);
+        buttonShowLatestReceipts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                getReceipts();
@@ -84,12 +74,13 @@ public class ClientPanel extends AppCompatActivity {
         tvUser.setText(text);
     }
 
-
+    /**
+     * Get your receipts history from server
+     */
     public void getReceipts() {
 
         Call<List<Receipt>> call = MainActivity.shopApi.getReceipts();
         call.enqueue(new Callback<List<Receipt>>() {
-
             @Override
             public void onResponse(Call<List<Receipt>> call, Response<List<Receipt>> response) {
                 if (!response.isSuccessful()) {
@@ -108,13 +99,14 @@ public class ClientPanel extends AppCompatActivity {
                     receipts.clear();
                     receiptAdapter.notifyDataSetChanged();
 
+                    /**
+                     * Show receipts in reverse order from latest to oldest
+                     */
                     for(int i = array.size()-1; i >= 0; i--) {
                         receipts.add(array.get(i));
                         receiptAdapter.notifyItemInserted(receipts.size()-1);
                     }
                 }
-
-
             }
 
             @Override

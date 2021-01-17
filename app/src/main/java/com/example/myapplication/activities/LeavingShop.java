@@ -21,15 +21,15 @@ import retrofit2.Response;
 public class LeavingShop extends AppCompatActivity {
 
 
-    Button leaveButton;
+    Button buttonLeaveShop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaving_shop);
 
-        leaveButton = findViewById(R.id.btnConfirmExit);
-        leaveButton.setOnClickListener(new View.OnClickListener() {
+        buttonLeaveShop = findViewById(R.id.btnConfirmExit);
+        buttonLeaveShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmExit();
@@ -38,10 +38,8 @@ public class LeavingShop extends AppCompatActivity {
     }
 
     public void confirmExit() {
-
         Call<Void> call = MainActivity.shopApi.confirmExit();
         call.enqueue(new Callback<Void>() {
-
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (!response.isSuccessful()) {

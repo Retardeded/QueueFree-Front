@@ -39,7 +39,6 @@ public class MainPanel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_panel);
-
         buttonClientPanel = findViewById(R.id.btnClientPanel);
         buttonStartShopping = findViewById(R.id.btnStartShopping);
         buttonLogout = findViewById(R.id.btnLogOut);
@@ -70,8 +69,10 @@ public class MainPanel extends AppCompatActivity {
         });
     }
 
+    /**
+     * Convert your user id into QR and show it
+     */
     public static void showQr(String text) {
-
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 300, 300);
@@ -84,16 +85,13 @@ public class MainPanel extends AppCompatActivity {
     }
 
     public void viewClientPanel() {
-
         Intent intent = new Intent(getApplicationContext(), ClientPanel.class);
         startActivity(intent);
-        //finish();
     }
 
     public void startShopping() {
         Call<ShoppingCart> call = MainActivity.shopApi.enterShop();
         call.enqueue(new Callback<ShoppingCart>() {
-
             @Override
             public void onResponse(Call<ShoppingCart> call, Response<ShoppingCart> response) {
                 if (!response.isSuccessful()) {
@@ -138,11 +136,9 @@ public class MainPanel extends AppCompatActivity {
                     }
                     return;
                 }
-
                 MainActivity.okHttpClient.dispatcher().executorService().shutdownNow();
                 MainActivity.okHttpClient.dispatcher().cancelAll();
                 MainActivity.okHttpClient = null;
-
                 lanuchOfMainActivty();
             }
 
