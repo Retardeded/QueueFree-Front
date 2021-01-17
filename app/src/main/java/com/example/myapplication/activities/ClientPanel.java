@@ -108,7 +108,7 @@ public class ClientPanel extends AppCompatActivity {
                     receipts.clear();
                     receiptAdapter.notifyDataSetChanged();
 
-                    for(int i = array.size()-1; i > 0; i--) {
+                    for(int i = array.size()-1; i >= 0; i--) {
                         receipts.add(array.get(i));
                         receiptAdapter.notifyItemInserted(receipts.size()-1);
                     }
